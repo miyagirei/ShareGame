@@ -3,7 +3,5 @@
 
 #include "framework.h"
 #include "ShareGame.h"
+#include "Dxlib.lib"
 
-//テスト
-
-//ochinchin
