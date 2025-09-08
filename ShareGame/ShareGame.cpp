@@ -3,5 +3,5 @@
 
 #include "framework.h"
 #include "ShareGame.h"
-#include "Dxlib.lib"
+#include "Dxlib.h"
 

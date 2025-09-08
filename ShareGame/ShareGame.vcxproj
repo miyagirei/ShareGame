@@ -132,11 +132,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="MapCreate.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShareGame.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="ShareGame.cpp" />
   </ItemGroup>
   <ItemGroup>
