@@ -137,6 +137,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ShareGame.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TileUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />

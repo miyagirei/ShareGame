@@ -3,7 +3,7 @@
 
 Character::Character( const std::string& name, int tileQ, int tileR, double positionX, double positionY )
 	:name( name ),
-	tilePos { tileQ,tileR },
+	tilePosition { tileQ,tileR },
 	positionX( positionX ),
 	positionY( positionY ),
 	moveSpeed( 100.0 ),
@@ -17,6 +17,17 @@ void Character::MoveTo( double targetX, double targetY ) {
 	this->targetX = targetX;
 	this->targetY = targetY;
 	characterState = CharacterState::Moving;
+}
+
+void Character::MoveToTile( int tileQ, int tileR ) { 
+	double screenX;
+	double screenY;
+
+	TileToScreen( tileQ, tileR, screenX, screenY );
+	MoveTo( screenX, screenY );
+
+	tilePosition.q = tileQ;
+	tilePosition.r = tileR;
 }
 
 void Character::Update( double deltaTime ) { 

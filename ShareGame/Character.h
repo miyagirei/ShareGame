@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "TileUtility.h"
 
 enum class CharacterState {
 	Idle,
@@ -7,15 +8,10 @@ enum class CharacterState {
 	Acting
 };
 
-struct TilePos {
-	int q = 0;
-	int r = 0;
-};
-
 class Character {
 public:
 	std::string name;
-	TilePos tilePos;
+	TilePosition tilePosition;
 	double positionX = 0.0;
 	double positionY = 0.0;
 
@@ -28,7 +24,7 @@ public:
 	Character( const std::string& name, int tileQ, int tileR, double positionX, double positionY );
 
 	void MoveTo( double targetX, double targetY );
-
+	void MoveToTile( int tileQ, int tileR );
 	void Update( double deltaTime );
 };
 
