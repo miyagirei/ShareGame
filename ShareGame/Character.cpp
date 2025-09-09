@@ -1,33 +1,23 @@
 #include "Character.h"
 #include <cmath>
+#include "TileUtility.h"
+#include "DxLib.h"
 
-Character::Character( const std::string& name, int tileQ, int tileR, double positionX, double positionY )
+Character::Character( const std::string& name, int startQ, int startR )
 	:name( name ),
-	tilePosition { tileQ,tileR },
-	positionX( positionX ),
-	positionY( positionY ),
-	moveSpeed( 100.0 ),
-	targetX( positionX ),
-	targetY( positionY ),
-	characterState( CharacterState::Idle ) {
-
+	tilePosition { startQ,startR },
+	moveSpeed(100.0),
+	characterState(CharacterState::Idle)
+{
+	TileToScreen( tilePosition.q, tilePosition.r, positionX, positionY );
+	targetX = positionX;
+	targetY = positionY;
 }
 
-void Character::MoveTo( double targetX, double targetY ) { 
-	this->targetX = targetX;
-	this->targetY = targetY;
+void Character::MoveToTile( const TilePosition& targetTile ) {
+	tilePosition = targetTile;
+	TileToScreen( targetTile.q, targetTile.r , targetX , targetY);
 	characterState = CharacterState::Moving;
-}
-
-void Character::MoveToTile( int tileQ, int tileR ) { 
-	double screenX;
-	double screenY;
-
-	TileToScreen( tileQ, tileR, screenX, screenY );
-	MoveTo( screenX, screenY );
-
-	tilePosition.q = tileQ;
-	tilePosition.r = tileR;
 }
 
 void Character::Update( double deltaTime ) { 
@@ -48,4 +38,9 @@ void Character::Update( double deltaTime ) {
 
 		}
 	}
+}
+
+void Character::Draw( ) const { 
+	int color = ( characterState == CharacterState::Idle ) ? GetColor( 0, 0, 255 ) : GetColor( 0, 255, 0 );
+	DrawCircle( ( int )positionX, ( int )positionY, 20, color, TRUE );
 }

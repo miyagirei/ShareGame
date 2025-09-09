@@ -5,6 +5,7 @@
 #include "ShareGame.h"
 #include "Dxlib.h"
 #include "Character.h"
+#include "Player.h"
 #include <vector>
 
 int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
@@ -12,7 +13,15 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
 
 	if ( DxLib_Init( ) == -1 ) return -1;
 
-	Character player( "Test", 0, 0, 320.0, 240.0 );
+	Player player;
+	Character unit1( "Unit1", 0, 0 );
+	Character unit2( "Unit2", 2, 1 );
+
+	player.AddUnit( &unit1 );
+	player.AddUnit( &unit2 );
+
+	int mouseX;
+	int mouseY;
 
 	std::vector<TilePosition> tiles;
 
@@ -23,33 +32,28 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
 	}
 
 	double deltaTile = 1.0 / 60.0;
-	bool prevUpKey = false;
 	while ( ProcessMessage( ) == 0 ) {
-		ClearDrawScreen( );
 
-		bool currentUpKey = CheckHitKey( KEY_INPUT_UP ) != 0;
-		for ( auto& t : tiles ) {
-			double x, y;
-			TileToScreen( t.q, t.r, x, y );
-			DrawBox( int( x ), int( y ), int( x + 50 ), int( y + 50 ), GetColor( 200, 200, 200 ), FALSE );
+		GetMousePoint( &mouseX, &mouseY );
+		if ( GetMouseInput( ) & MOUSE_INPUT_LEFT ) {
+			player.OnLeftClick( mouseX, mouseY );
 		}
-		
-		if ( CheckHitKey( KEY_INPUT_RIGHT ) ) player.MoveToTile( player.tilePosition.q + 1, player.tilePosition.r );
-		if ( CheckHitKey( KEY_INPUT_LEFT ) )  player.MoveToTile( player.tilePosition.q - 1, player.tilePosition.r );
-		if ( CheckHitKey( KEY_INPUT_DOWN ) )  player.MoveToTile( player.tilePosition.q, player.tilePosition.r + 1 );
-		
-		if ( currentUpKey && !prevUpKey )    player.MoveToTile( player.tilePosition.q, player.tilePosition.r - 1 );
-
-		prevUpKey = currentUpKey;
-		DrawFormatString( 10, 10, GetColor( 255, 255, 255 ),
-						  "Tile Q: %d, Tile R: %d\nPos X: %.1f, Pos Y: %.1f",
-						  player.tilePosition.q, player.tilePosition.r,
-						  player.positionX, player.positionY );
+		if ( GetMouseInput( ) & MOUSE_INPUT_RIGHT ) {
+			player.OnRightClick( mouseX, mouseY );
+		}
 
 		player.Update( deltaTile );
 
-		DrawCircle( player.positionX, player.positionY, 20, GetColor( 255, 0, 0 ), TRUE );
-	
+		ClearDrawScreen( );
+		DrawFormatString( 10, 10, GetColor( 255, 255, 255 ),
+						  "SelectUnit: %d",
+						  player.selectedUnit );
+		for ( auto& t : tiles ) {
+			double x, y;
+			TileToScreen( t.q, t.r, x, y );
+			DrawBox( int( x -25), int( y-25 ), int( x + 25 ), int( y + 25 ), GetColor( 200, 200, 200 ), FALSE );
+		}
+		player.Draw( );
 		ScreenFlip( );
 	}
 
