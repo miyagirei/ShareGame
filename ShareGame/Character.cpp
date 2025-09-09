@@ -12,6 +12,9 @@ Character::Character( const std::string& name, int startQ, int startR )
 	TileToScreen( tilePosition.q, tilePosition.r, positionX, positionY );
 	targetX = positionX;
 	targetY = positionY;
+	colorR = 0;
+	colorG = 0;
+	colorB = 255;
 }
 
 void Character::MoveToTile( const TilePosition& targetTile ) {
@@ -41,6 +44,15 @@ void Character::Update( double deltaTime ) {
 }
 
 void Character::Draw( ) const { 
-	int color = ( characterState == CharacterState::Idle ) ? GetColor( 0, 0, 255 ) : GetColor( 0, 255, 0 );
-	DrawCircle( ( int )positionX, ( int )positionY, 20, color, TRUE );
+	DrawCircle( ( int )positionX, ( int )positionY, 20, GetColor(colorR,colorG,colorB), TRUE );
+}
+
+void Character::ChangeColor( int r, int g, int b ) { 
+	colorR = r;
+	colorG = g;
+	colorB = b;
+}
+
+TilePosition Character::GetTilePosition( ) const { 
+	return ScreenToTile( positionX, positionY );
 }
