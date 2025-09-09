@@ -21,10 +21,10 @@ public:
 
 	CharacterState characterState;
 
-	Character( const std::string& name, int tileQ, int tileR, double positionX, double positionY );
+	Character( const std::string& name, int startQ, int startR );
 
-	void MoveTo( double targetX, double targetY );
-	void MoveToTile( int tileQ, int tileR );
+	void MoveToTile( const TilePosition& targetTile );
 	void Update( double deltaTime );
+	void Draw( )const;
 };
 
