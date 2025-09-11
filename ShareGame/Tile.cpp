@@ -1,4 +1,5 @@
 #include "Tile.h"
+#include "HexagonUtility.h"
 #include "Dxlib.h"
 
 Tile::Tile( int q, int r, TileAction act )
@@ -8,13 +9,17 @@ Tile::Tile( int q, int r, TileAction act )
 }
 
 void Tile::Draw( ) const { 
-	DrawBox( x - TILE_WIDTH / 4, y - TILE_HEIGHT / 4, x + TILE_WIDTH /4, y + TILE_HEIGHT / 4, GetColor( 200, 200, 200 ), FALSE );
+    int radius = 28;
+    unsigned int color = GetColor(200, 200, 200);
 
-	if ( action == TileAction::Heal ) { 
-		DrawBox( x - TILE_WIDTH / 4, y - TILE_HEIGHT / 4,  x + TILE_WIDTH / 4,  y + TILE_HEIGHT / 4, GetColor( 0, 255, 0 ), TRUE );
-	} else if ( action == TileAction::Damage ) {
-		DrawBox( x - TILE_WIDTH / 4, y - TILE_HEIGHT / 4, x + TILE_WIDTH / 4, y + TILE_HEIGHT / 4, GetColor( 255, 0, 0 ), TRUE );
-	}
+    DrawHexagon((int)x, (int)y, radius, color, true);
+
+    if (action == TileAction::Heal) {
+        DrawHexagon((int)x, (int)y, radius, GetColor(0, 255, 0), true);
+    }
+    else if (action == TileAction::Damage) {
+        DrawHexagon((int)x, (int)y, radius, GetColor(255, 0, 0), true);
+    }
 }
 
 bool Tile::IsClicked( int mouseX, int mouseY )const {
