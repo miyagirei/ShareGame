@@ -1,5 +1,6 @@
 #include "CharacterTestScene.h"
 #include "DxLib.h"
+#include "MapCreate.h"
 
 CharacterTestScene::CharacterTestScene( ):board(10,10)
 {
@@ -14,12 +15,13 @@ CharacterTestScene::CharacterTestScene( ):board(10,10)
 
 void CharacterTestScene::Run( ) { 
 	double deltaTime = 1.0 / 60.0;
+		MapCreate test;
 	while ( ProcessMessage() == 0 ) {
 		GetMousePoint( &mouseX, &mouseY );
 
 		ProcessInput( );
 		Update( deltaTime );
-
+		test.SceneChange( );
 		ClearDrawScreen( );
 		Draw( );
 		ScreenFlip( );
