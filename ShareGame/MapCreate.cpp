@@ -3,7 +3,11 @@
 
 mapNum mapState = map1;
 
-bool isClicked() {
+MapCreate::MapCreate( ) {
+	scene = mapNum::map1;
+}
+
+bool MapCreate::isClicked() {
 	static int prevMouse = 0;
 	int mouseInput = GetMouseInput();
 
@@ -14,7 +18,7 @@ bool isClicked() {
 	return clicked;
 }
 
-void SceneChange() {
+void MapCreate::SceneChange() {
 
 	if (mapState == map1) {
 		DrawFormatString(50, 50, GetColor(255, 255, 255), "aaa");
@@ -41,19 +45,4 @@ void SceneChange() {
 	}
 }
 
-//atodekesite
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-{
-	if (DxLib_Init() == -1) return -1;
-	SetDrawScreen(DX_SCREEN_BACK);
-	while (ProcessMessage() == 0)
-	{
-		ClearDrawScreen();
-		SceneChange();
-		ScreenFlip();
-	}
-	
-	DxLib_End();
-	return 0;
-}
 
