@@ -6,6 +6,7 @@ void UIManager::Draw( Player& player, Board& board, int mouseX, int mouseY ) {
 	if ( selected == nullptr ) return;
 
 	Tile* tile = board.GetTileAt( selected->positionX, selected->positionY );
+
 	if ( tile != nullptr && tile->action != TileAction::None ) { 
 		DrawBox( actionButtonX, actionButtonY, actionButtonX + actionButtonW, actionButtonY + actionButtonH,
 				 GetColor( 150, 150, 150 ), TRUE );
