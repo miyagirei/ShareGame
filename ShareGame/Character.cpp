@@ -50,6 +50,6 @@ void Character::ChangeColor(int r, int g, int b) {
     colorB = b;
 }
 
-TilePosition Character::GetTilePosition() const {
-    return ScreenToTile(positionX, positionY);
+TilePosition Character::GetTilePosition( ) const { 
+	return ScreenToTile( positionX, positionY );
 }
