@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Dxlib.h"
 
 Board::Board( int width, int height ) { 
 	for ( int q = 0; q < width; q++ ) { 
@@ -11,9 +12,20 @@ Board::Board( int width, int height ) {
 	tiles[ 5 ].action = TileAction::Damage;
 }
 
-void Board::Draw( ) const { 
-	for ( const auto& tile : tiles ) { 
-		tile.Draw( );
+void Board::Draw() const {
+	int mouseX, mouseY;
+	GetMousePoint(&mouseX, &mouseY); 
+
+	bool isClicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
+
+	for (auto& tile : tiles) {
+		bool highlight = false;
+
+		if (isClicking && tile.IsClicked(mouseX, mouseY)) {
+			highlight = true;
+		}
+
+		tile.Draw(highlight);
 	}
 }
 
