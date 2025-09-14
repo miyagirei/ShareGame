@@ -2,6 +2,8 @@
 #include "HexagonUtility.h"
 #include "Dxlib.h"
 
+//void Tile::Draw(const Camera& camera) const {
+
 double PI = 3.14159265358979323846;
 
 Tile::Tile( int q, int r, TileAction act )
@@ -12,15 +14,22 @@ Tile::Tile( int q, int r, TileAction act )
 
 void Tile::Draw(bool highlight) const {
     int radius = 28;
-    unsigned int color = GetColor(200, 200, 200);
 
-    DrawHexagon((int)x, (int)y, radius, color, true);
+    double fieldX, fieldY;
+    TileToScreen(tilePosition.q, tilePosition.r, fieldX, fieldY);
+
+    int sx = camera.convertFieldPositionToScreenX(Position{ fieldX, fieldY });
+    int sy = camera.convertFieldPositionToScreenY(Position{ fieldX, fieldY });
+    int sr = camera.convertSizeToScreenSize(radius);
+
+    unsigned int color = GetColor(200, 200, 200);
+    DrawHexagon(sx, sy, sr, color, true);
 
     if (action == TileAction::Heal) {
-        DrawHexagon((int)x, (int)y, radius, GetColor(0, 255, 0), true);
+        DrawHexagon(sx, sy, sr, GetColor(0, 255, 0), true);
     }
     else if (action == TileAction::Damage) {
-        DrawHexagon((int)x, (int)y, radius, GetColor(255, 0, 0), true);
+        DrawHexagon(sx, sy, sr, GetColor(255, 0, 0), true);
     }
 
     if (highlight) {

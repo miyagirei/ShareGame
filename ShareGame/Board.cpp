@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Camera.h"
 #include "Tile.h"
 #include "DxLib.h"
 
@@ -16,6 +17,12 @@ tile_rows(height){
 	tiles[ 15 ].action = TileAction::Damage;
 }
 
+/*void Board::Draw(const Camera& camera) const {
+    for (const auto& tile : tiles) {
+        tile.Draw(camera);
+    }
+}*/
+
 void Board::Draw() const {
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY); 
@@ -31,17 +38,10 @@ void Board::Draw() const {
 		} else { 
 			tile.Draw( false );
 		}
-
-		//if (isClicking && tile.IsClicked(mouseX, mouseY)) {
-		//	highlight = true;
-		//}
-
-		//tile.Draw(highlight);
 	}
 }
 
 const Tile* Board::GetTileAt( double mouseX, double mouseY )const {
-
 
 	TilePosition pos = ScreenToTile( mouseX, mouseY );
 	if ( pos.q >= 0 && pos.q < tile_cols &&

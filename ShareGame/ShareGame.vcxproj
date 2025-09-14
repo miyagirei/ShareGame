@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterTestScene.h" />
     <ClInclude Include="framework.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />

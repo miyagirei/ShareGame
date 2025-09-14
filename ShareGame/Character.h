@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "TileUtility.h"
+#include "Camera.h"
 
 enum class CharacterState {
 	Idle,
@@ -29,7 +30,7 @@ public:
 
 	void MoveToTile( const TilePosition& targetTile );
 	void Update( double deltaTime );
-	void Draw( )const;
+	void Draw(const Camera& camera)const;
 	void ChangeColor( int r, int g, int b );
 	TilePosition GetTilePosition( ) const;
 };
