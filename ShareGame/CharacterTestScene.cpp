@@ -31,7 +31,7 @@ void CharacterTestScene::Run( ) {
 
 void CharacterTestScene::ProcessInput( ) { 
 	if ( GetMouseInput() & MOUSE_INPUT_RIGHT ) { 
-		Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
+		const Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
 		if ( clickedTile != nullptr ) { 
 			player.OnRightClick( mouseX, mouseY );
 		}
@@ -66,7 +66,7 @@ void CharacterTestScene::Draw( ) {
 	}
 
 
-		Tile* tile = board.GetTileAt( mouseX, mouseY );
+	    const Tile* tile = board.GetTileAt( mouseX, mouseY );
 		if ( tile != nullptr ) {
 			TilePosition targetTile = ScreenToTile( mouseX, mouseY );
 			double tx, ty;

@@ -22,18 +22,25 @@ void Board::Draw() const {
 
 	bool isClicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
 
+	const Tile* targetTile = GetTileAt( mouseX, mouseY );
+
 	for (auto& tile : tiles) {
 		bool highlight = false;
-
-		if (isClicking && tile.IsClicked(mouseX, mouseY)) {
-			highlight = true;
+		if ( targetTile != nullptr && targetTile == &tile) { 
+			tile.Draw(true);
+		} else { 
+			tile.Draw( false );
 		}
 
-		tile.Draw(highlight);
+		//if (isClicking && tile.IsClicked(mouseX, mouseY)) {
+		//	highlight = true;
+		//}
+
+		//tile.Draw(highlight);
 	}
 }
 
-Tile* Board::GetTileAt( double mouseX, double mouseY ) {
+const Tile* Board::GetTileAt( double mouseX, double mouseY )const {
 
 
 	TilePosition pos = ScreenToTile( mouseX, mouseY );

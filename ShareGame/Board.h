@@ -10,6 +10,6 @@ public:
 	Board( int width, int height );
 
 	void Draw( ) const;
-	Tile* GetTileAt( double mouseX, double mouseY );
+	const Tile* GetTileAt( double mouseX, double mouseY )const ;
 };
 
