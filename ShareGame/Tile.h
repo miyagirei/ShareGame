@@ -17,6 +17,6 @@ public:
 	Tile( int q, int r, TileAction act = TileAction::None );
 
 	void Draw( ) const;
-	bool IsClicked( int mouseX, int mouseY ) const;
+	bool IsClicked( double mouseX, double mouseY ) const;
 };
 
