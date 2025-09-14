@@ -10,7 +10,7 @@ Tile::Tile( int q, int r, TileAction act )
 	TileToScreen( q, r, x, y );
 }
 
-void Tile::Draw( ) const { 
+void Tile::Draw(bool highlight) const {
     int radius = 28;
     unsigned int color = GetColor(200, 200, 200);
 
@@ -21,6 +21,10 @@ void Tile::Draw( ) const {
     }
     else if (action == TileAction::Damage) {
         DrawHexagon((int)x, (int)y, radius, GetColor(255, 0, 0), true);
+    }
+
+    if (highlight) {
+        DrawHexagon((int)x, (int)y, radius, GetColor(255, 255, 0), false);
     }
 }
 
