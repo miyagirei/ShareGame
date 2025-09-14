@@ -1,8 +1,9 @@
 #include "CharacterTestScene.h"
 #include "DxLib.h"
 #include "MapCreate.h"
+#include "Camera.h"
 
-CharacterTestScene::CharacterTestScene( ):board(10,10)
+CharacterTestScene::CharacterTestScene( ):board(10,10), camera(0,0)
 {
 	Character* unit1 = new Character( "Unit1",0,0 );
 	Character* unit2 = new Character( "Unit2",2,1 );
@@ -10,7 +11,7 @@ CharacterTestScene::CharacterTestScene( ):board(10,10)
 	player.AddUnit( unit1 );
 	player.AddUnit( unit2 );
 
-
+	
 }
 
 void CharacterTestScene::Run( ) { 
@@ -33,17 +34,18 @@ void CharacterTestScene::ProcessInput( ) {
 	if ( GetMouseInput() & MOUSE_INPUT_RIGHT ) { 
 		Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
 		if ( clickedTile != nullptr ) { 
-			player.OnRightClick( mouseX, mouseY );
+			player.OnRightClick( mouseX, mouseY,camera );
 		}
 	}	
 	
 	if ( GetMouseInput( ) & MOUSE_INPUT_LEFT ) {
 		uiManager.OnLeftClick( mouseX, mouseY, player );
-		player.OnLeftClick( mouseX, mouseY );
+		player.OnLeftClick( mouseX, mouseY,camera );
 	}
 }
 
 void CharacterTestScene::Update( double deltaTime ) { 
+	camera.updateByMouseWheel();
 	player.Update( deltaTime );
 }
 
@@ -58,8 +60,8 @@ void CharacterTestScene::Draw( ) {
 						  "TileR: %d", player.selectedUnit->GetTilePosition( ).r );	
 	}
 
-	board.Draw( );
-	player.Draw( );
+	board.Draw(camera);
+	player.Draw( camera);
 
 	uiManager.Draw( player, board, mouseX, mouseY );
 }

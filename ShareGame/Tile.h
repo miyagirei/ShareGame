@@ -1,5 +1,6 @@
 #pragma once
 #include "TileUtility.h"
+#include "Camera.h"
 
 enum class TileAction {
 	None,
@@ -16,7 +17,7 @@ public:
 
 	Tile( int q, int r, TileAction act = TileAction::None );
 
-	void Draw( ) const;
+	void Draw(const Camera& camera ) const;
 	bool IsClicked( int mouseX, int mouseY ) const;
 };
 

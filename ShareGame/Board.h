@@ -8,7 +8,7 @@ public:
 
 	Board( int width, int height );
 
-	void Draw( ) const;
+	void Draw(const Camera& camera ) const;
 	Tile* GetTileAt( int mouseX, int mouseY );
 };
 

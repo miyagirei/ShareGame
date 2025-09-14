@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Camera.h"
 
 Board::Board( int width, int height ) { 
 	for ( int q = 0; q < width; q++ ) { 
@@ -11,12 +12,11 @@ Board::Board( int width, int height ) {
 	tiles[ 5 ].action = TileAction::Damage;
 }
 
-void Board::Draw( ) const { 
-	for ( const auto& tile : tiles ) { 
-		tile.Draw( );
-	}
+void Board::Draw(const Camera& camera) const {
+    for (const auto& tile : tiles) {
+        tile.Draw(camera);
+    }
 }
-
 Tile* Board::GetTileAt( int mouseX, int mouseY ) { 
 	for ( auto& tile : tiles ) { 
 		if ( tile.IsClicked( mouseX, mouseY ) ) { 

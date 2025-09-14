@@ -11,6 +11,20 @@ void Camera::initialize() {
     scaleFactor = 10.0;
 }
 
+Camera::Camera()
+    : offsetX(0.0), offsetY(0.0), zoom(1.0) {
+}
+
+void Camera::Update() {
+    int wheel = GetMouseWheelRotVol();
+    if (wheel != 0) {
+        zoom += wheel * 0.001; 
+        if (zoom < 0.1) zoom = 0.1;
+        if (zoom > 3.0) zoom = 3.0;
+    }
+}
+
+
 void Camera::setPosition(const Position& p) {
     pos = p;
 }
@@ -69,4 +83,15 @@ bool Camera::isFullOutOfScreen(const Position& p, double radius) const {
 
 Position Camera::getMovedPos(const Position& p, const Vector2& v) const {
     return Position{ p.x + v.x, p.y + v.y };
+}
+
+void Camera::updateByMouseWheel() {
+    int wheel = GetMouseWheelRotVol();
+    if (wheel != 0) {
+        scaleFactor += wheel * 0.1;
+
+   
+        if (scaleFactor < 1.0) scaleFactor = 1.0;
+        if (scaleFactor > 50.0) scaleFactor = 50.0;
+    }
 }
