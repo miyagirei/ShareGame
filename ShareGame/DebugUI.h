@@ -4,9 +4,10 @@ class DebugUI {
 public:
 	void SummonDebug();
 	void SceneTranceButton();
-	void EnableGrid();
+	bool EnableGrid(int x1, int x2, int y1, int y2);
 
 private:
-	bool isClicked();
-	bool isDebugKeyPressed();
+	bool IsKeyPressed(int key);
+	bool IsClicked();
+	bool IsDebugKeyPressed();
 };
