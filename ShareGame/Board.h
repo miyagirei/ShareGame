@@ -5,10 +5,11 @@
 class Board {
 public:
 	std::vector<Tile> tiles;
-
+	int tile_cols;
+	int tile_rows;
 	Board( int width, int height );
 
 	void Draw( ) const;
-	Tile* GetTileAt( int mouseX, int mouseY );
+	Tile* GetTileAt( double mouseX, double mouseY );
 };
 
