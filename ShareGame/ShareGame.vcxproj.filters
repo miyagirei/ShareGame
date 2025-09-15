@@ -10,6 +10,7 @@
     <ClCompile Include="ShareGame.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="DebugUI.cpp" />
     <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +27,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileUtility.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="DebugUI.h" />
     <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
