@@ -9,8 +9,7 @@ public:
 	int tile_rows;
 	Board( int width, int height );
 
-	//void Draw(const Camera& camera ) const;
-	void Draw( ) const;
+	void Draw( const Camera& camera ) const;
 	const Tile* GetTileAt( double mouseX, double mouseY )const ;
 };
 

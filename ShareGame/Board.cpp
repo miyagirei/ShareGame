@@ -17,26 +17,20 @@ tile_rows(height){
 	tiles[ 15 ].action = TileAction::Damage;
 }
 
-/*void Board::Draw(const Camera& camera) const {
-    for (const auto& tile : tiles) {
-        tile.Draw(camera);
-    }
-}*/
-
-void Board::Draw() const {
+void Board::Draw( const Camera& camera ) const {
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY); 
-
+	Position  target = camera.convertScreenToFieldPosition( mouseX, mouseY );
 	bool isClicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
 
-	const Tile* targetTile = GetTileAt( mouseX, mouseY );
+	const Tile* targetTile = GetTileAt( target.x, target.y );
 
 	for (auto& tile : tiles) {
 		bool highlight = false;
 		if ( targetTile != nullptr && targetTile == &tile) { 
-			tile.Draw(true);
+			tile.Draw( camera,true);
 		} else { 
-			tile.Draw( false );
+			tile.Draw( camera,false );
 		}
 	}
 }
