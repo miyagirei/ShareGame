@@ -10,10 +10,13 @@
 #include "Board.h"
 #include "CharacterTestScene.h"
 //-----追記箇所-----
+#include "MapCreate.h"
 #include "DebugUI.h"
 
+MapCreate map;
+
 int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
-	/*
+	
 	ChangeWindowMode( TRUE );
 	if ( DxLib_Init( ) == -1 ) return -1;
 
@@ -22,13 +25,16 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
 
 	DxLib_End( );
 	return 0;
-	*/
+
+	//-----動作確認用-----
+	/*
     ChangeWindowMode(TRUE), DxLib_Init(), SetDrawScreen(DX_SCREEN_BACK);
 	DebugUI debug;
     while (ProcessMessage() == 0)
     {
         ClearDrawScreen();
 
+		map.SceneChange();
 		debug.SummonDebug();
 
         ScreenFlip();
@@ -36,4 +42,5 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
 
     DxLib_End();
     return 0;
+	*/
 }

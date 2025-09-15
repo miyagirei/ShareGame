@@ -1,5 +1,8 @@
 #include "DebugUI.h"
 #include "DxLib.h"
+#include "MapCreate.h"
+
+extern MapCreate map;
 
 const int GRID_SIZE = 10;
 
@@ -27,21 +30,21 @@ bool DebugUI::IsDebugKeyPressed() {
 	return isF5Enabled;
 }
 
-bool DebugUI::IsClicked() {
+void DebugUI::UpdateInput() {
 	static int prevMouse = 0;
 	int mouseInput = GetMouseInput();
 
-	bool clicked = ((mouseInput & MOUSE_INPUT_LEFT) && !(prevMouse & MOUSE_INPUT_LEFT));
-	//if (clicked) DrawString(100, 100, "clicked", GetColor(255, 255, 255));
+	clickedThisFrame = ((mouseInput & MOUSE_INPUT_LEFT) && !(prevMouse & MOUSE_INPUT_LEFT));
 
 	prevMouse = mouseInput;
-	return clicked;
 }
 
 void DebugUI::SummonDebug() {
 	if (IsDebugKeyPressed()) {
+		UpdateInput();
 
-		int gridx1 = 30, gridx2 = 200, gridy1 = 100, gridy2 = 150;
+		//grid
+		int gridx1 = 30, gridx2 = 170, gridy1 = 80, gridy2 = 110;
 		if (EnableGrid(gridx1, gridy1, gridx2, gridy2)) {
 			for (int x = 0; x <= 1000; x += GRID_SIZE) {
 				DrawLine(x, 0, x, 1000, GetColor(255, 255, 255));
@@ -51,16 +54,55 @@ void DebugUI::SummonDebug() {
 				DrawLine(0, y, 1000, y, GetColor(255, 255, 255));
 			}
 		}
-		DrawFormatString(60, 120, GetColor(0, 0, 0), "グリッド表示");
+		DrawFormatString(50, 88, GetColor(0, 0, 0), "グリッド表示");
 		DrawFormatString(30, 15, GetColor(255, 255, 255), "デバッグモード");
-		DrawBox(30, 40, 200, 90, GetColor(192, 192, 192), TRUE);
-		DrawFormatString(60, 60, GetColor(0, 0, 0),"シーン切り替え");
 
+		//SceneTrance
+		DrawBox(30, 40, 170, 70, GetColor(192, 192, 192), TRUE);
+		DrawFormatString(42, 48, GetColor(0, 0, 0),"シーン切り替え");
+
+		int prevScenex1 = 5, prevScenex2 = 25, prevSceney1 = 40, prevSceney2 = 70;
+		DrawBox(prevScenex1, prevSceney1, prevScenex2, prevSceney2, GetColor(192, 192, 192), TRUE);
+		DrawTriangle(6, 55, 22, 42, 22, 68, GetColor(0, 0, 0), TRUE);
+
+		int nextScenex1 = 175, nextScenex2 = 195, nextSceney1 = 40, nextSceney2 = 70;
+		DrawBox(nextScenex1, nextSceney1, nextScenex2, nextSceney2, GetColor(192, 192, 192), TRUE);
+		DrawTriangle(193, 55, 178, 42, 178, 68, GetColor(0, 0, 0), TRUE);
+
+		SceneTranceButton();
 	}
 }
 
 void DebugUI::SceneTranceButton() {
 
+	int prevScenex1 = 5, prevScenex2 = 25, prevSceney1 = 40, prevSceney2 = 70;
+	DrawBox(prevScenex1, prevSceney1, prevScenex2, prevSceney2, GetColor(192, 192, 192), TRUE);
+	DrawTriangle(6, 55, 22, 42, 22, 68, GetColor(0, 0, 0), TRUE);
+
+	int nextScenex1 = 175, nextScenex2 = 195, nextSceney1 = 40, nextSceney2 = 70;
+	DrawBox(nextScenex1, nextSceney1, nextScenex2, nextSceney2, GetColor(192, 192, 192), TRUE);
+	DrawTriangle(193, 55, 178, 42, 178, 68, GetColor(0, 0, 0), TRUE);
+
+	// クリック判定
+	int mx, my;
+	GetMousePoint(&mx, &my);
+
+	if (clickedThisFrame) {
+		if (mx >= prevScenex1 && mx <= prevScenex2 &&
+			my >= prevSceney1 && my <= prevSceney2) {
+			if (map.GetScene() == map1) map.SetScene(map3);
+			else map.SetScene((mapNum)(map.GetScene() - 1));
+			DrawString(250, 50, "Prevボタン押下", GetColor(255, 0, 0));
+		}
+
+		if (mx >= nextScenex1 && mx <= nextScenex2 &&
+			my >= nextSceney1 && my <= nextSceney2) {
+			if (map.GetScene() == map3) map.SetScene(map1);
+			else map.SetScene((mapNum)(map.GetScene() + 1));
+			DrawString(250, 70, "Nextボタン押下", GetColor(0, 255, 0));
+		}
+	}
+	DrawFormatString(400, 20, GetColor(255, 255, 0), "Mouse: (%d, %d)", mx, my);
 }
 
 bool DebugUI::EnableGrid(int x1, int y1, int x2, int y2) {
@@ -71,7 +113,7 @@ bool DebugUI::EnableGrid(int x1, int y1, int x2, int y2) {
 
 	static bool isEnabled = false;
 
-	if (IsClicked()) {
+	if (clickedThisFrame) {
 		if (mouseX >= x1 && mouseX <= x2 &&
 			mouseY >= y1 && mouseY <= y2) {
 			isEnabled = !isEnabled;

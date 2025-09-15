@@ -13,6 +13,9 @@ public:
 
 	mapNum scene;
 	void SceneChange( );
+
+	void SetScene(mapNum newScene) { scene = newScene; }
+	mapNum GetScene() const { return scene; }
 private:
 	bool isClicked( );
 };
