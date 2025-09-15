@@ -1,6 +1,7 @@
 #pragma once
 #include "Character.h"
 #include <vector>
+#include "Camera.h"
 
 class Player {
 public :
@@ -9,9 +10,9 @@ public :
 
 	void AddUnit( Character* unit );
 	void Update( double deltaTime );
-	void Draw( ) const;
+	void Draw(const Camera& camera) const;
 
-	void OnLeftClick( int mouseX, int mouseY );
-	void OnRightClick( int mouseX, int mouseY );
+	void OnLeftClick(int mouseX, int mouseY, const Camera& camera);
+	void OnRightClick(int mouseX, int mouseY, const Camera& camera);
 };
 

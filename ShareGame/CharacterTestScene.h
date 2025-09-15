@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "Camera.h"
 
 class CharacterTestScene {
 public:
@@ -12,6 +13,7 @@ private:
 	Board board;
 	Player player;
 	UIManager uiManager;
+	Camera camera;
 
 	int mouseX = 0;
 	int mouseY = 0;

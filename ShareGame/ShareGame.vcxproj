@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterTestScene.h" />
     <ClInclude Include="DebugUI.h" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugUI.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />
