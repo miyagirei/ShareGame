@@ -20,8 +20,11 @@ int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
 	ChangeWindowMode( TRUE );
 	if ( DxLib_Init( ) == -1 ) return -1;
 
-	CharacterTestScene testScene;
-	testScene.Run( );
+	//CharacterTestScene testScene;
+	while ( ProcessMessage( ) == 0 ) { 
+		//testScene.Run( );
+		map.SceneChange( );
+	}
 
 	DxLib_End( );
 	return 0;

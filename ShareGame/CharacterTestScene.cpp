@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "MapCreate.h"
 #include "Camera.h"
+#include "DebugUI.h"
 
 CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) {
 	Character* unit1 = new Character( "Unit1", 0, 0 );
@@ -13,20 +14,16 @@ CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) {
 
 }
 
-void CharacterTestScene::Run( ) {
-	double deltaTime = 1.0 / 60.0;
-	MapCreate test;
-	while ( ProcessMessage( ) == 0 ) {
+void CharacterTestScene::Run( double deltaTime ) {
+	DebugUI debug;
 		GetMousePoint( &mouseX, &mouseY );
 
 		ProcessInput( );
 		Update( deltaTime );
-		test.SceneChange( );
 		ClearDrawScreen( );
 		Draw( );
+	debug.SummonDebug( );
 		ScreenFlip( );
-
-	}
 }
 
 void CharacterTestScene::ProcessInput( ) {

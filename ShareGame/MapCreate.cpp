@@ -1,5 +1,6 @@
 #include "Dxlib.h"
 #include "MapCreate.h"
+#include "DebugUI.h"
 
 MapCreate::MapCreate( ) {
 	scene = mapNum::map1;
@@ -17,17 +18,26 @@ bool MapCreate::isClicked() {
 
 
 void MapCreate::SceneChange() {
-    if (scene == map1) {
-        DrawString(200, 200, "map1", GetColor(255, 255, 255));
-        //if (isClicked()) scene = map2;
-    }
-    else if (scene == map2) {
-        DrawString(200, 200, "map2", GetColor(255, 255, 255));
-        //if (isClicked()) scene = map3;
-    }
-    else if (scene == map3) {
-        DrawString(200, 200, "map3", GetColor(255, 255, 255));
-        //if (isClicked()) scene = map1;
+    DebugUI debug;
+    switch ( scene ) {
+    case map1:
+        testScene.Run( );
+        break;
+
+    case map2:
+        ClearDrawScreen( );
+        debug.SummonDebug( );
+        DrawString( 200, 200, "map2", GetColor( 255, 255, 255 ) );
+        ScreenFlip( );
+        break;
+
+    case map3:
+        
+        ClearDrawScreen( );
+        debug.SummonDebug( );
+        DrawString( 200, 200, "map3", GetColor( 255, 255, 255 ) );
+        ScreenFlip( );
+        break;
     }
 }
 

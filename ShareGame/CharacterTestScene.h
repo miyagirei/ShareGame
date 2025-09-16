@@ -7,7 +7,7 @@
 class CharacterTestScene {
 public:
 	CharacterTestScene( );
-	void Run( );
+	void Run( double deltaTime = 1.0 / 60.0 );
 
 private:
 	Board board;
