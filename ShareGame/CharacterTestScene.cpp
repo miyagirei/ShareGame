@@ -4,25 +4,24 @@
 #include "Camera.h"
 #include "DebugUI.h"
 
-CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) {
+CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) ,player(0 , PlayerType::Human){//playerはGameLoop作成時の蛇足なので必要に応じて消してください
 	Character* unit1 = new Character( "Unit1", 0, 0 );
 	Character* unit2 = new Character( "Unit2", 2, 1 );
 
+
 	player.AddUnit( unit1 );
 	player.AddUnit( unit2 );
-
 
 }
 
 void CharacterTestScene::Run( double deltaTime ) {
 	DebugUI debug;
 		GetMousePoint( &mouseX, &mouseY );
-
 		ProcessInput( );
 		Update( deltaTime );
 		ClearDrawScreen( );
 		Draw( );
-	debug.SummonDebug( );
+		debug.SummonDebug( );
 		ScreenFlip( );
 }
 
@@ -36,7 +35,8 @@ void CharacterTestScene::ProcessInput( ) {
 
 	if ( GetMouseInput( ) & MOUSE_INPUT_LEFT ) {
 		uiManager.OnLeftClick( mouseX, mouseY, player );
-		player.OnLeftClick( mouseX, mouseY, camera );
+		player.OnLeftClick( mouseX, mouseY, camera , player.controlledUnits);//GameManagerで全体のユニットを管理するようにしたため
+		                                                                     //controlledUnitsで代用しています
 	}
 }
 

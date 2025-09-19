@@ -1,5 +1,6 @@
 #pragma once
 #include "CharacterTestScene.h"
+#include "GameLoopScene.h"
 
 //‰¼
 enum mapNum {
@@ -20,5 +21,6 @@ public:
 
 private:
 	CharacterTestScene testScene;
+	GameLoopScene gameLoopScene;
 	bool isClicked( );
 };

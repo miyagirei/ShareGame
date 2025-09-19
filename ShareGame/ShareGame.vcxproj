@@ -137,6 +137,8 @@
     <ClInclude Include="CharacterTestScene.h" />
     <ClInclude Include="DebugUI.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameLoopScene.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="HexagonUtility.h" />
     <ClInclude Include="MapCreate.h" />
     <ClInclude Include="Player.h" />
@@ -150,6 +152,8 @@
   <ItemGroup>
     <ClCompile Include="DebugUI.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameLoopScene.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />

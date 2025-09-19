@@ -4,6 +4,7 @@
 void UIManager::Draw( Player& player, Board& board, int mouseX, int mouseY ) { 
 	Character* selected = player.selectedUnit;
 	if ( selected == nullptr ) return;
+	if ( !player.CanOperableUnit( ) )return;
 
 	const Tile* tile = board.GetTileAt( selected->positionX, selected->positionY );
 
@@ -19,7 +20,7 @@ void UIManager::OnLeftClick( int mouseX, int mouseY, Player& player ) {
 
 	Character* selected = player.selectedUnit;
 
-	if ( selected != nullptr ) { 
+	if ( selected != nullptr && player.CanOperableUnit() ) { 
 		selected->ChangeColor( 255, 255, 0 );
 	}
 }

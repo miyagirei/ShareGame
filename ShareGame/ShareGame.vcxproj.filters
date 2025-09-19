@@ -12,6 +12,8 @@
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="DebugUI.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameLoopScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -29,6 +31,8 @@
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="DebugUI.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameLoopScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShareGame.rc" />

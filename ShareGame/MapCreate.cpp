@@ -3,7 +3,7 @@
 #include "DebugUI.h"
 
 MapCreate::MapCreate( ) {
-	scene = mapNum::map1;
+	scene = mapNum::map2;
 }
 
 bool MapCreate::isClicked() {
@@ -25,10 +25,7 @@ void MapCreate::SceneChange() {
         break;
 
     case map2:
-        ClearDrawScreen( );
-        debug.SummonDebug( );
-        DrawString( 200, 200, "map2", GetColor( 255, 255, 255 ) );
-        ScreenFlip( );
+        gameLoopScene.Run( );
         break;
 
     case map3:
