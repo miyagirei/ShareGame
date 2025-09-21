@@ -17,6 +17,8 @@ public :
 	std::vector<Character*> controlledUnits;
 	Character* selectedUnit = nullptr;
 
+	bool endTurn = false;
+
 	Player( int id, PlayerType type );
 
 	void AddUnit( Character* unit );

@@ -10,8 +10,19 @@ void GameManager::AddPlayer( Player* player, Character* unit) {
 }
 
 void GameManager::Update( double deltaTime ) { 
+	bool allPlayerEndTurn = true;
+	
 	for ( auto player : players ) { 
 		player->Update( deltaTime );
+
+		if ( !player->endTurn )allPlayerEndTurn = false;
+	}
+
+	if ( allPlayerEndTurn ) { 
+		currentTurn++;
+		for ( auto player : players ) { 
+			player->endTurn = false;
+		}
 	}
 }
 

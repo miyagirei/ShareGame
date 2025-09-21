@@ -14,6 +14,30 @@ GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//player‚ÍGame
 	game.AddPlayer( player1, unit1);
 	game.AddPlayer( player2 , unit2 );
 
+	Button actionButton = { "action" ,
+	[ & ] ( )
+	{
+		Character* selected = game.GetLocalPlayer( ).selectedUnit;
+		if ( selected != nullptr && game.GetLocalPlayer( ).CanOperableUnit( ) ) {
+			selected->ChangeColor( 255, 255, 0 );
+		}
+	},
+	[ & ] ( ) 
+	{ 
+		if ( !game.GetLocalPlayer( ).CanOperableUnit( ) )return false;
+
+		Character* selected = game.GetLocalPlayer( ).selectedUnit;
+		if ( !selected ) return false;
+
+		const Tile* tile = board.GetTileAt( selected->positionX, selected->positionY );
+		if ( !tile ) return false;
+
+		return tile->action != TileAction::None;
+	},
+		600,200,120,40
+	};
+
+	uiManager.AddButton( actionButton );
 }
 
 void GameLoopScene::Run( double deltaTime ) {

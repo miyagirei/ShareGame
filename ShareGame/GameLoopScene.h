@@ -12,7 +12,7 @@ public:
 
 private:
 	GameManager game;
-	Player* player1;
+	//Player* player1;
 
 	Board board;
 	UIManager uiManager;

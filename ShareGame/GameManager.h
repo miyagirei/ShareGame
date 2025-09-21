@@ -12,6 +12,7 @@ public:
 	std::vector<Player*> players;
 	std::vector<Character*> allUnits;
 	int localPlayerId = 0;
+	int currentTurn = 1;
 
 	void AddPlayer( Player* player, Character* unit = nullptr );
 	void Update( double deltaTime );

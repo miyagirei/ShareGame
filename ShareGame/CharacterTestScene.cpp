@@ -12,6 +12,28 @@ CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) ,play
 	player.AddUnit( unit1 );
 	player.AddUnit( unit2 );
 
+	Button actionButton = { "action" ,
+	[ & ] ( ) {
+		Character* selected = player.selectedUnit;
+		if ( selected != nullptr && player.CanOperableUnit( ) ) {
+			selected->ChangeColor( 255, 255, 0 );
+		}
+	},
+	[ & ] ( ) {
+		if ( !player.CanOperableUnit( ) )return false;
+
+		Character* selected = player.selectedUnit;
+		if ( !selected ) return false;
+
+		const Tile* tile = board.GetTileAt( selected->positionX, selected->positionY );
+		if ( !tile ) return false;
+
+		return tile->action != TileAction::None;
+	},
+		600,200,120,40
+	};
+
+	uiManager.AddButton( actionButton );
 }
 
 void CharacterTestScene::Run( double deltaTime ) {

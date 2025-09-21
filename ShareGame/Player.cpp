@@ -6,7 +6,8 @@
 
 Player::Player( int id, PlayerType type ) :
 playerId(id),
-playerType(type){
+playerType(type),
+endTurn(false){
 
 }
 
