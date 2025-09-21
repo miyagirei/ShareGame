@@ -140,6 +140,7 @@
     <ClInclude Include="GameLoopScene.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="HexagonUtility.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="MapCreate.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameLoopScene.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />

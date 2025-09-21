@@ -3,6 +3,7 @@
 #include "MapCreate.h"
 #include "Camera.h"
 #include "DebugUI.h"
+#include "InputManager.h"
 
 GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//playerはGameLoop作成時の蛇足なので必要に応じて消してください
 	Character* unit1 = new Character( "Unit1", 0, 0 );
@@ -14,6 +15,7 @@ GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//playerはGame
 	game.AddPlayer( player1, unit1);
 	game.AddPlayer( player2 , unit2 );
 
+	//テスト用のアクションを実行するためのボタン//現在はキャラクターの色が変わる
 	Button actionButton = { "action" ,
 	[ & ] ( )
 	{
@@ -37,7 +39,21 @@ GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//playerはGame
 		600,200,120,40
 	};
 
+	Button nextTurnButton = { "NextTurn",
+	[ & ] ( ) 
+	{
+		game.GetLocalPlayer( ).endTurn = !game.GetLocalPlayer( ).endTurn;
+		
+	},
+	[ ] ( ) 
+	{ 
+		return true;
+	},
+		520,300,100,40
+	};
+
 	uiManager.AddButton( actionButton );
+	uiManager.AddButton( nextTurnButton );
 }
 
 void GameLoopScene::Run( double deltaTime ) {
@@ -52,17 +68,20 @@ void GameLoopScene::Run( double deltaTime ) {
 }
 
 void GameLoopScene::ProcessInput( ) {
-	if ( GetMouseInput( ) & MOUSE_INPUT_RIGHT ) {
+	InputManager::Update( );
+
+	if ( InputManager::GetMouse(MOUSE_INPUT_RIGHT) ) {
 		const Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
 		if ( clickedTile != nullptr ) {
 			game.OnRightClick( mouseX, mouseY, camera );
 		}
 	}
 
-	if ( GetMouseInput( ) & MOUSE_INPUT_LEFT ) {
+	if ( InputManager::GetMouseDown( MOUSE_INPUT_LEFT ) ) {
 		uiManager.OnLeftClick( mouseX, mouseY, game.GetLocalPlayer() );
 		game.OnLeftClick( mouseX, mouseY, camera );
 	}
+
 }
 
 void GameLoopScene::Update( double deltaTime ) {
@@ -105,6 +124,10 @@ void GameLoopScene::Draw( ) {
 					  "CameraX: %d", ( int )world_pos.x );
 	DrawFormatString( 500, 90, GetColor( 255, 255, 255 ),
 					  "CameraY: %d", ( int )world_pos.y );
+	DrawFormatString( 500, 150, GetColor( 255, 255, 255 ),
+					  "End: %d", game.GetLocalPlayer().endTurn );
+	DrawFormatString( 500, 170, GetColor( 255, 255, 255 ),
+					  "TurnNum: %d", game.currentTurn );
 
 	const Tile* tile = board.GetTileAt( world_pos.x, world_pos.y );
 	if ( tile != nullptr ) {
@@ -126,7 +149,7 @@ void GameLoopScene::Draw( ) {
 }
 
 void GameLoopScene::DebugSwitchActivePlayer( ) {
-	if ( CheckHitKey( KEY_INPUT_TAB ) ) { 
+	if ( InputManager::GetKeyDown(KEY_INPUT_TAB) ) {
 		game.SwitchActivePlayer( );
 	}
 }
