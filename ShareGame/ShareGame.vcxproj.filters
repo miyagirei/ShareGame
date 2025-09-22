@@ -35,6 +35,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameLoopScene.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="SceneType.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShareGame.rc" />

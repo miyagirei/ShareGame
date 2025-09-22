@@ -9,9 +9,9 @@ class GameLoopScene {
 public:
 	GameLoopScene( );
 	void Run( double deltaTime = 1.0 / 60.0 );
+	GameManager game;
 
 private:
-	GameManager game;
 	//Player* player1;
 
 	Board board;

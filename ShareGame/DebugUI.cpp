@@ -1,6 +1,7 @@
 #include "DebugUI.h"
 #include "DxLib.h"
 #include "MapCreate.h"
+#include "SceneType.h"
 
 extern MapCreate map;
 
@@ -90,15 +91,15 @@ void DebugUI::SceneTranceButton() {
 	if (clickedThisFrame) {
 		if (mx >= prevScenex1 && mx <= prevScenex2 &&
 			my >= prevSceney1 && my <= prevSceney2) {
-			if (map.GetScene() == map1) map.SetScene(map3);
-			else map.SetScene((mapNum)(map.GetScene() - 1));
+			if (map.GetScene() == SceneType::map1) map.SetScene( SceneType::map3);
+			else map.SetScene(static_cast<SceneType>(static_cast<int>(map.GetScene()) - 1));
 			DrawString(250, 50, "Prevボタン押下", GetColor(255, 0, 0));
 		}
 
 		if (mx >= nextScenex1 && mx <= nextScenex2 &&
 			my >= nextSceney1 && my <= nextSceney2) {
-			if (map.GetScene() == map3) map.SetScene(map1);
-			else map.SetScene((mapNum)(map.GetScene() + 1));
+			if (map.GetScene() == SceneType::map3) map.SetScene( SceneType::map1);
+			else map.SetScene( static_cast< SceneType >( static_cast< int >( map.GetScene( ) ) + 1 ) );
 			DrawString(250, 70, "Nextボタン押下", GetColor(0, 255, 0));
 		}
 	}

@@ -3,7 +3,7 @@
 #include "DebugUI.h"
 
 MapCreate::MapCreate( ) {
-	scene = mapNum::map2;
+	scene = SceneType::map2;
 }
 
 bool MapCreate::isClicked() {
@@ -20,15 +20,18 @@ bool MapCreate::isClicked() {
 void MapCreate::SceneChange() {
     DebugUI debug;
     switch ( scene ) {
-    case map1:
+    case SceneType::map1:
         testScene.Run( );
         break;
 
-    case map2:
+    case SceneType::map2:
         gameLoopScene.Run( );
+        if ( auto next = gameLoopScene.game.GetRequestedScene( ) ) { 
+            TransScene( *next );
+        }
         break;
 
-    case map3:
+    case SceneType::map3:
         
         ClearDrawScreen( );
         debug.SummonDebug( );
@@ -39,3 +42,6 @@ void MapCreate::SceneChange() {
 }
 
 
+void MapCreate::TransScene( SceneType next ) {
+    scene = next;
+}

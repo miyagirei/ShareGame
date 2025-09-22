@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "MapCreate.h"
 
 void GameManager::AddPlayer( Player* player, Character* unit) {
 	players.push_back( player );
@@ -24,6 +25,10 @@ void GameManager::Update( double deltaTime ) {
 			player->endTurn = false;
 		}
 	}
+
+	if ( currentTurn >= maxTurn ) { 
+		requestedScene = SceneType::map3;
+	}
 }
 
 void GameManager::Draw( const Camera& camera ) const { 
@@ -46,4 +51,8 @@ Player& GameManager::GetLocalPlayer( ) {
 
 void GameManager::SwitchActivePlayer( ) { 
 	localPlayerId = ( localPlayerId + 1 ) % players.size( );
+}
+
+std::optional<SceneType> GameManager::GetRequestedScene( ) const { 
+	return requestedScene;
 }

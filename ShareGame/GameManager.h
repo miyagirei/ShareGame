@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Player.h"
+#include <optional>
+#include "SceneType.h"
 
 struct PlayerState {
 	int stamina;
@@ -13,6 +15,8 @@ public:
 	std::vector<Character*> allUnits;
 	int localPlayerId = 0;
 	int currentTurn = 1;
+	int maxTurn = 3;
+	std::optional<SceneType> GetRequestedScene( ) const;
 
 	void AddPlayer( Player* player, Character* unit = nullptr );
 	void Update( double deltaTime );
@@ -24,5 +28,6 @@ public:
 	Player& GetLocalPlayer( );
 	void SwitchActivePlayer( );
 private:
+	std::optional<SceneType> requestedScene;
 };
 

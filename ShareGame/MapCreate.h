@@ -1,23 +1,19 @@
 #pragma once
 #include "CharacterTestScene.h"
 #include "GameLoopScene.h"
-
-//‰¼
-enum mapNum {
-	map1, //init
-	map2, //2
-	map3 //3
-};
+#include "SceneType.h"
 
 class MapCreate {
 public:
+
 	MapCreate( );
 
-	mapNum scene;
+	SceneType scene;
 	void SceneChange( );
 
-	void SetScene(mapNum newScene) { scene = newScene; }
-	mapNum GetScene() const { return scene; }
+	void SetScene( SceneType newScene) { scene = newScene; }
+	SceneType GetScene() const { return scene; }
+	void TransScene( SceneType next );
 
 private:
 	CharacterTestScene testScene;
