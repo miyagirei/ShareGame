@@ -4,7 +4,6 @@
 #include "framework.h"
 #include "ShareGame.h"
 #include "Dxlib.h"
-#include <vector>
 #include "MapCreate.h"
 
 MapCreate map;
