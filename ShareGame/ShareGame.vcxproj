@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>"C:\DxLib_VC"</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,10 +138,14 @@
     <ClInclude Include="CharacterTestScene.h" />
     <ClInclude Include="DebugUI.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameLoopScene.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="HexagonUtility.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="MapCreate.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SceneType.h" />
     <ClInclude Include="ShareGame.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tile.h" />
@@ -150,6 +155,9 @@
   <ItemGroup>
     <ClCompile Include="DebugUI.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameLoopScene.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />
