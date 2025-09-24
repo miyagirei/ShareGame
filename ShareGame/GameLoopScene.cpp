@@ -99,6 +99,7 @@ void GameLoopScene::Draw( ) {
 	uiManager.Draw( game.GetLocalPlayer( ), board, mouseX, mouseY );
 
 	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
+		DrawBox(0, 0, 100, 150, GetColor(128, 128, 128), TRUE); //”wŒi
 		DrawFormatString( 10, 10, GetColor( 255, 255, 255 ),
 						  game.GetLocalPlayer( ).selectedUnit->name.c_str( ) );
 		DrawFormatString( 10, 30, GetColor( 255, 255, 255 ),
