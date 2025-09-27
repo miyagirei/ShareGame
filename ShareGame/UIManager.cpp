@@ -17,10 +17,13 @@ void UIManager::Draw( Player& player, Board& board, int mouseX, int mouseY ) {
 }
 
 void UIManager::OnLeftClick( int mouseX, int mouseY, Player& player ) { 
-	for ( auto button : buttons ) { 
+	lastUIClicked = false;
+	for ( auto& button : buttons ) { 
 		if ( !IsMouseOverButton( mouseX, mouseY , button) )continue;
 
 		button.onClick( );
+		lastUIClicked = true;
+		return;
 	}
 
 }

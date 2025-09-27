@@ -21,6 +21,8 @@ private:
 	int mouseX = 0;
 	int mouseY = 0;
 
+	bool showUnitInfo = false;
+
 	void ProcessInput( );
 	void Update( double deltaTime );
 	void Draw( );

@@ -22,8 +22,10 @@ public:
 	void Draw( Player& player, Board& board, int mouseX, int mouseY );
 	void OnLeftClick( int mouseX, int mouseY, Player& player );
 
-private:
+	bool WasUIClicked() const { return lastUIClicked; }
 
+private:
+	bool lastUIClicked = false;
 	bool IsMouseOverButton( int mouseX, int mouseY , Button button) const;
 };
 
