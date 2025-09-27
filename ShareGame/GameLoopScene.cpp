@@ -5,6 +5,7 @@
 #include "DebugUI.h"
 #include "InputManager.h"
 
+
 GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//player‚ÍGameLoopì¬Žž‚ÌŽÖ‘«‚È‚Ì‚Å•K—v‚É‰ž‚¶‚ÄÁ‚µ‚Ä‚­‚¾‚³‚¢
 	Character* unit1 = new Character( "Unit1", 0, 0 );
 	Character* unit2 = new Character( "Unit2", 2, 1 );
@@ -52,8 +53,22 @@ GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//player‚ÍGame
 		520,300,100,40
 	};
 
+
+	Button unitInfoButton = { "UnitInfo",
+		[&]() {
+			showUnitInfo = !showUnitInfo;
+		},
+
+		[&]() {
+			return game.GetLocalPlayer().selectedUnit != nullptr;
+		},
+
+		0,0,100,30
+	};
+
 	uiManager.AddButton( actionButton );
 	uiManager.AddButton( nextTurnButton );
+	uiManager.AddButton( unitInfoButton );
 }
 
 void GameLoopScene::Run( double deltaTime ) {
@@ -79,7 +94,9 @@ void GameLoopScene::ProcessInput( ) {
 
 	if ( InputManager::GetMouseDown( MOUSE_INPUT_LEFT ) ) {
 		uiManager.OnLeftClick( mouseX, mouseY, game.GetLocalPlayer() );
-		game.OnLeftClick( mouseX, mouseY, camera );
+		if (!uiManager.WasUIClicked()) {
+			game.OnLeftClick(mouseX, mouseY, camera);
+		}
 	}
 
 }
@@ -92,24 +109,30 @@ void GameLoopScene::Update( double deltaTime ) {
 
 void GameLoopScene::Draw( ) {
 
-
 	board.Draw( camera );
 	game.Draw( camera );
 
 	uiManager.Draw( game.GetLocalPlayer( ), board, mouseX, mouseY );
 
-	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
-		DrawFormatString( 10, 10, GetColor( 255, 255, 255 ),
-						  game.GetLocalPlayer( ).selectedUnit->name.c_str( ) );
-		DrawFormatString( 10, 30, GetColor( 255, 255, 255 ),
-						  "TileQ: %d", game.GetLocalPlayer( ).selectedUnit->GetTilePosition( ).q );
-		DrawFormatString( 10, 50, GetColor( 255, 255, 255 ),
-						  "TileR: %d", game.GetLocalPlayer( ).selectedUnit->GetTilePosition( ).r );
-		DrawFormatString( 10, 70, GetColor( 255, 255, 255 ),
-						  "PosX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->positionX );
-		DrawFormatString( 10, 90, GetColor( 255, 255, 255 ),
-						  "PosY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->positionY );
-
+	if (game.GetLocalPlayer().selectedUnit != nullptr) {
+		
+		if (showUnitInfo)
+		{
+			DrawBox(0, 30, 100, 150, GetColor(128, 128, 128), TRUE);
+			DrawFormatString(10, 40, GetColor(255, 255, 255),
+				game.GetLocalPlayer().selectedUnit->name.c_str());
+			DrawFormatString(10, 60, GetColor(255, 255, 255),
+				"TileQ: %d", game.GetLocalPlayer().selectedUnit->GetTilePosition().q);
+			DrawFormatString(10, 80, GetColor(255, 255, 255),
+				"TileR: %d", game.GetLocalPlayer().selectedUnit->GetTilePosition().r);
+			DrawFormatString(10, 100, GetColor(255, 255, 255),
+				"PosX: %d", (int)game.GetLocalPlayer().selectedUnit->positionX);
+			DrawFormatString(10, 120, GetColor(255, 255, 255),
+				"PosY: %d", (int)game.GetLocalPlayer().selectedUnit->positionY);
+		}
+	}
+	else {
+		showUnitInfo = false;
 	}
 
 	Position world_pos = camera.convertScreenToFieldPosition( mouseX, mouseY );
