@@ -1,0 +1,26 @@
+#pragma once
+#include "NetworkManager.h"
+#include "CharacterTestScene.h"
+#include "GameLoopScene.h"
+#include "SceneType.h"
+#include "OnlineScene.h"
+class SceneManager {
+public:
+	SceneType scene;
+	void Update( );
+
+	SceneManager( );
+	void SceneChange( );
+	void SetScene( SceneType newScene );
+	SceneType GetScene( ) const;
+	void TransScene( SceneType next );
+
+private:
+	CharacterTestScene testScene;
+	GameLoopScene gameLoopScene;
+	OnlineScene onlineScene;
+	bool isClicked( );
+};
+
+
+

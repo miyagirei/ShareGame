@@ -1,5 +1,4 @@
 #include "GameManager.h"
-#include "MapCreate.h"
 
 void GameManager::AddPlayer( Player* player, Character* unit) {
 	players.push_back( player );

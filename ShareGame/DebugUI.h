@@ -1,9 +1,9 @@
 #pragma once
-
+#include "SceneManager.h"
 class DebugUI {
 public:
-	void SummonDebug();
-	void SceneTranceButton();
+	void SummonDebug(SceneType& scene);
+	void SceneTranceButton( SceneType& scene );
 	bool EnableGrid(int x1, int x2, int y1, int y2);
 
 private:

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -104,13 +104,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>"C:\DxLib_VC"</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DxLib_VC;C:\Users\vantan\source\repos\ShareGame\third_party\enet\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>"C:\DxLib_VC"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\DxLib_VC;C:\Users\vantan\source\repos\ShareGame\third_party\enet\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;winmm.lib;enet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,12 +144,14 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="HexagonUtility.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="MapCreate.h" />
+    <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="OnlineScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SceneType.h" />
     <ClInclude Include="ShareGame.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileUtility.h" />
     <ClInclude Include="UIManager.h" />
@@ -158,13 +162,15 @@
     <ClCompile Include="GameLoopScene.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="MapCreate.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterTestScene.cpp" />
     <ClCompile Include="HexagonUtility.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="OnlineScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShareGame.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
