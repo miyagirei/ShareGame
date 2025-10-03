@@ -19,6 +19,7 @@ void UIManager::Draw( Player& player, Board& board, int mouseX, int mouseY ) {
 void UIManager::OnLeftClick( int mouseX, int mouseY, Player& player ) { 
 	lastUIClicked = false;
 	for ( auto& button : buttons ) { 
+		if (!button.canShow()) continue;
 		if ( !IsMouseOverButton( mouseX, mouseY , button) )continue;
 
 		button.onClick( );
