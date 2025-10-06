@@ -4,17 +4,18 @@
 #include "framework.h"
 #include "ShareGame.h"
 #include "Dxlib.h"
-#include "MapCreate.h"
+#include "SceneManager.h"
 
-MapCreate map;
+SceneManager sceneManager;
 
-int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR, int ) {
-	
+int WINAPI WinMain( HINSTANCE, HINSTANCE, LPSTR cmdline, int ) {
+	SetDoubleStartValidFlag( TRUE );//多重起動処理
 	ChangeWindowMode( TRUE );
+	SetAlwaysRunFlag( TRUE );
 	if ( DxLib_Init( ) == -1 ) return -1;
-
 	while ( ProcessMessage( ) == 0 ) { 
-		map.SceneChange( );
+		//map.SceneChange( );
+		sceneManager.SceneChange( );
 	}
 
 	DxLib_End( );

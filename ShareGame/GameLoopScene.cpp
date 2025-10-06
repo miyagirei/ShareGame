@@ -1,32 +1,40 @@
 #include "GameLoopScene.h"
 #include "DxLib.h"
-#include "MapCreate.h"
 #include "Camera.h"
-#include "DebugUI.h"
 #include "InputManager.h"
+#include <sstream>
 
 
-GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//player‚ÍGameLoopì¬Žž‚ÌŽÖ‘«‚È‚Ì‚Å•K—v‚É‰ž‚¶‚ÄÁ‚µ‚Ä‚­‚¾‚³‚¢
+GameLoopScene::GameLoopScene( NetworkManager* net )
+	:board( 10, 10 ), camera( 0, 0 ), network( net ) {
+}
+
+
+void GameLoopScene::Initialize( bool isHost ) {
 	Character* unit1 = new Character( "Unit1", 0, 0 );
 	Character* unit2 = new Character( "Unit2", 2, 1 );
 
 	Player* player1 = new Player( 0, PlayerType::Human );
-	Player* player2 = new Player( 1, PlayerType::AI );
+	Player* player2 = new Player( 1, PlayerType::Human );
 
-	game.AddPlayer( player1, unit1);
-	game.AddPlayer( player2 , unit2 );
+	game.AddPlayer( player1, unit1 );
+	game.AddPlayer( player2, unit2 );
 
-	//ƒeƒXƒg—p‚ÌƒAƒNƒVƒ‡ƒ“‚ðŽÀs‚·‚é‚½‚ß‚Ìƒ{ƒ^ƒ“//Œ»Ý‚ÍƒLƒƒƒ‰ƒNƒ^[‚ÌF‚ª•Ï‚í‚é
+	if ( isHost ) {
+		game.localPlayerId = 0;
+	} else {
+		game.localPlayerId = 1;
+	}
+
+	//ãƒ†ã‚¹ãƒˆç”¨ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹ãŸã‚ã®ãƒœã‚¿ãƒ³//ç¾åœ¨ã¯ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®è‰²ãŒå¤‰ã‚ã‚‹
 	Button actionButton = { "action" ,
-	[ & ] ( )
-	{
+	[ & ] ( ) {
 		Character* selected = game.GetLocalPlayer( ).selectedUnit;
 		if ( selected != nullptr && game.GetLocalPlayer( ).CanOperableUnit( ) ) {
 			selected->ChangeColor( 255, 255, 0 );
 		}
 	},
-	[ & ] ( ) 
-	{ 
+	[ & ] ( ) {
 		if ( !game.GetLocalPlayer( ).CanOperableUnit( ) )return false;
 
 		Character* selected = game.GetLocalPlayer( ).selectedUnit;
@@ -41,13 +49,11 @@ GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//player‚ÍGame
 	};
 
 	Button nextTurnButton = { "NextTurn",
-	[ & ] ( ) 
-	{
+	[ & ] ( ) {
 		game.GetLocalPlayer( ).endTurn = !game.GetLocalPlayer( ).endTurn;
-		
+
 	},
-	[ ] ( ) 
-	{ 
+	[ ] ( ) {
 		return true;
 	},
 		520,300,100,40
@@ -68,27 +74,46 @@ GameLoopScene::GameLoopScene( ) :board( 10, 10 ), camera( 0, 0 ) {//player‚ÍGame
 
 	uiManager.AddButton( actionButton );
 	uiManager.AddButton( nextTurnButton );
-	uiManager.AddButton( unitInfoButton );
+  uiManager.AddButton( unitInfoButton );
+  
+	initialize = true;
+
+	if ( network ) {
+		network->onReceiveCallback = [ this ] ( const std::string& msg ) {
+			std::istringstream iss( msg );
+			std::string command, name;
+			int q, r;
+			iss >> command >> name >> q >> r;
+
+			if ( command == "MOVE" ) {
+				game.MoveCharacter( name, q, r );
+			}
+
+		};
+	}
 }
 
-void GameLoopScene::Run( double deltaTime ) {
-	DebugUI debug;
+void GameLoopScene::Run( double deltaTime, bool isHost ) {
+	if ( !initialize ) {
+		Initialize( isHost );
+	}
 	GetMousePoint( &mouseX, &mouseY );
 	ProcessInput( );
 	Update( deltaTime );
-	ClearDrawScreen( );
 	Draw( );
-	debug.SummonDebug( );
-	ScreenFlip( );
 }
 
 void GameLoopScene::ProcessInput( ) {
 	InputManager::Update( );
 
-	if ( InputManager::GetMouse(MOUSE_INPUT_RIGHT) ) {
+	if ( InputManager::GetMouse( MOUSE_INPUT_RIGHT ) ) {
 		const Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
 		if ( clickedTile != nullptr ) {
-			game.OnRightClick( mouseX, mouseY, camera );
+			if ( network ) {
+				game.OnRightClick( mouseX, mouseY, camera , network);
+			} else { 
+				game.OnRightClick( mouseX, mouseY, camera );
+			}
 		}
 	}
 
@@ -113,7 +138,7 @@ void GameLoopScene::Draw( ) {
 	game.Draw( camera );
 
 	uiManager.Draw( game.GetLocalPlayer( ), board, mouseX, mouseY );
-
+  
 	if (game.GetLocalPlayer().selectedUnit != nullptr) {
 		
 		if (showUnitInfo)
@@ -129,6 +154,10 @@ void GameLoopScene::Draw( ) {
 				"PosX: %d", (int)game.GetLocalPlayer().selectedUnit->positionX);
 			DrawFormatString(10, 120, GetColor(255, 255, 255),
 				"PosY: %d", (int)game.GetLocalPlayer().selectedUnit->positionY);
+      		DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
+						  "TargetX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetX );
+		DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
+						  "TargetY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetY );
 		}
 	}
 	else {
@@ -148,7 +177,7 @@ void GameLoopScene::Draw( ) {
 	DrawFormatString( 500, 90, GetColor( 255, 255, 255 ),
 					  "CameraY: %d", ( int )world_pos.y );
 	DrawFormatString( 500, 150, GetColor( 255, 255, 255 ),
-					  "End: %d", game.GetLocalPlayer().endTurn );
+					  "End: %d", game.GetLocalPlayer( ).endTurn );
 	DrawFormatString( 500, 170, GetColor( 255, 255, 255 ),
 					  "TurnNum: %d", game.currentTurn );
 
@@ -172,7 +201,7 @@ void GameLoopScene::Draw( ) {
 }
 
 void GameLoopScene::DebugSwitchActivePlayer( ) {
-	if ( InputManager::GetKeyDown(KEY_INPUT_TAB) ) {
+	if ( InputManager::GetKeyDown( KEY_INPUT_TAB ) ) {
 		game.SwitchActivePlayer( );
 	}
 }

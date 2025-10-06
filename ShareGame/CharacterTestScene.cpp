@@ -1,8 +1,6 @@
 #include "CharacterTestScene.h"
 #include "DxLib.h"
-#include "MapCreate.h"
 #include "Camera.h"
-#include "DebugUI.h"
 
 CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) ,player(0 , PlayerType::Human){//player‚ÍGameLoopì¬‚ÌÖ‘«‚È‚Ì‚Å•K—v‚É‰‚¶‚ÄÁ‚µ‚Ä‚­‚¾‚³‚¢
 	Character* unit1 = new Character( "Unit1", 0, 0 );
@@ -37,14 +35,10 @@ CharacterTestScene::CharacterTestScene( ) :board( 10, 10 ), camera( 0, 0 ) ,play
 }
 
 void CharacterTestScene::Run( double deltaTime ) {
-	DebugUI debug;
 		GetMousePoint( &mouseX, &mouseY );
 		ProcessInput( );
 		Update( deltaTime );
-		ClearDrawScreen( );
 		Draw( );
-		debug.SummonDebug( );
-		ScreenFlip( );
 }
 
 void CharacterTestScene::ProcessInput( ) {

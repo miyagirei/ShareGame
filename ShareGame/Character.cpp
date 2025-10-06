@@ -20,6 +20,12 @@ void Character::MoveToTile(const TilePosition& targetTile) {
     characterState = CharacterState::Moving;
 }
 
+void Character::MoveToTile( int targetQ, int targetR ) {
+    tilePosition = { targetQ , targetR };
+    TileToScreen( targetQ, targetR, targetX, targetY );
+    characterState = CharacterState::Moving;
+}
+
 void Character::Update(double deltaTime) {
     if (characterState == CharacterState::Moving) {
         double diffX = targetX - positionX;
@@ -56,4 +62,8 @@ void Character::ChangeColor(int r, int g, int b) {
 
 TilePosition Character::GetTilePosition( ) const {
 	return ScreenToTile( positionX, positionY );
+}
+
+std::string Character::GetName( )const { 
+    return name;
 }

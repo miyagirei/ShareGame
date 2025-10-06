@@ -1,5 +1,4 @@
 #include "GameManager.h"
-#include "MapCreate.h"
 
 void GameManager::AddPlayer( Player* player, Character* unit) {
 	players.push_back( player );
@@ -17,6 +16,10 @@ void GameManager::Update( double deltaTime ) {
 		player->Update( deltaTime );
 
 		if ( !player->endTurn )allPlayerEndTurn = false;
+	}
+
+	for ( auto unit : allUnits ) {
+		unit->Update( deltaTime );
 	}
 
 	if ( allPlayerEndTurn ) { 
@@ -41,8 +44,14 @@ void GameManager::OnLeftClick( int mouseX, int mouseY, const Camera& camera ) {
 	players[ localPlayerId ]->OnLeftClick( mouseX, mouseY, camera , allUnits);
 }
 
-void GameManager::OnRightClick( int mouseX, int mouseY, const Camera& camera ) { 
-	players[ localPlayerId ]->OnRightClick( mouseX, mouseY, camera );
+void GameManager::OnRightClick( int mouseX, int mouseY, const Camera& camera, NetworkManager* network ) {
+	if ( players[ localPlayerId ]->OnRightClick( mouseX, mouseY, camera ) ) { 
+		TilePosition target = players[ localPlayerId ]->GetLastMoveTarget( );
+		if ( network ) { 
+			std::string msg = "MOVE " + players[ localPlayerId ]->GetSelectedUnit()->GetName() + " " + std::to_string( target.q ) + " " + std::to_string( target.r );
+			network->Send( msg );
+		}
+	}
 }
 
 Player& GameManager::GetLocalPlayer( ) { 
@@ -55,4 +64,21 @@ void GameManager::SwitchActivePlayer( ) {
 
 std::optional<SceneType> GameManager::GetRequestedScene( ) const { 
 	return requestedScene;
+}
+
+Character* GameManager::FindCharacterByName( std::string name ) { 
+	for ( Character* unit : allUnits ) { 
+		if ( unit && unit->GetName( ) == name ) { 
+			return unit;
+		}
+	}
+
+	return nullptr;
+}
+
+void GameManager::MoveCharacter( std::string name, int tileQ, int tileR ) {
+	Character* unit = FindCharacterByName( name );
+	if ( unit != nullptr ) {
+		unit->MoveToTile( tileQ, tileR );
+	}
 }
