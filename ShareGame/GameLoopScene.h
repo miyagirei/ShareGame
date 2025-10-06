@@ -7,8 +7,8 @@
 
 class GameLoopScene {
 public:
-	GameLoopScene( );
-	void Run( double deltaTime = 1.0 / 60.0 );
+	GameLoopScene( NetworkManager* net = nullptr);
+	void Run( double deltaTime = 1.0 / 60.0 , bool isHost = true);
 	GameManager game;
 
 private:
