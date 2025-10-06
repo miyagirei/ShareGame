@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include <sstream>
 
+
 GameLoopScene::GameLoopScene( NetworkManager* net )
 	:board( 10, 10 ), camera( 0, 0 ), network( net ) {
 }
@@ -25,7 +26,7 @@ void GameLoopScene::Initialize( bool isHost ) {
 		game.localPlayerId = 1;
 	}
 
-	//ƒeƒXƒg—p‚ÌƒAƒNƒVƒ‡ƒ“‚ðŽÀs‚·‚é‚½‚ß‚Ìƒ{ƒ^ƒ“//Œ»Ý‚ÍƒLƒƒƒ‰ƒNƒ^[‚ÌF‚ª•Ï‚í‚é
+	//ãƒ†ã‚¹ãƒˆç”¨ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹ãŸã‚ã®ãƒœã‚¿ãƒ³//ç¾åœ¨ã¯ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®è‰²ãŒå¤‰ã‚ã‚‹
 	Button actionButton = { "action" ,
 	[ & ] ( ) {
 		Character* selected = game.GetLocalPlayer( ).selectedUnit;
@@ -58,8 +59,23 @@ void GameLoopScene::Initialize( bool isHost ) {
 		520,300,100,40
 	};
 
+
+	Button unitInfoButton = { "UnitInfo",
+		[&]() {
+			showUnitInfo = !showUnitInfo;
+		},
+
+		[&]() {
+			return game.GetLocalPlayer().selectedUnit != nullptr;
+		},
+
+		0,0,100,30
+	};
+
 	uiManager.AddButton( actionButton );
 	uiManager.AddButton( nextTurnButton );
+  uiManager.AddButton( unitInfoButton );
+  
 	initialize = true;
 
 	if ( network ) {
@@ -102,8 +118,10 @@ void GameLoopScene::ProcessInput( ) {
 	}
 
 	if ( InputManager::GetMouseDown( MOUSE_INPUT_LEFT ) ) {
-		uiManager.OnLeftClick( mouseX, mouseY, game.GetLocalPlayer( ) );
-		game.OnLeftClick( mouseX, mouseY, camera );
+		uiManager.OnLeftClick( mouseX, mouseY, game.GetLocalPlayer() );
+		if (!uiManager.WasUIClicked()) {
+			game.OnLeftClick(mouseX, mouseY, camera);
+		}
 	}
 
 }
@@ -116,28 +134,34 @@ void GameLoopScene::Update( double deltaTime ) {
 
 void GameLoopScene::Draw( ) {
 
-
 	board.Draw( camera );
 	game.Draw( camera );
 
 	uiManager.Draw( game.GetLocalPlayer( ), board, mouseX, mouseY );
-
-	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
-		DrawFormatString( 10, 10, GetColor( 255, 255, 255 ),
-						  game.GetLocalPlayer( ).selectedUnit->name.c_str( ) );
-		DrawFormatString( 10, 30, GetColor( 255, 255, 255 ),
-						  "TileQ: %d", game.GetLocalPlayer( ).selectedUnit->GetTilePosition( ).q );
-		DrawFormatString( 10, 50, GetColor( 255, 255, 255 ),
-						  "TileR: %d", game.GetLocalPlayer( ).selectedUnit->GetTilePosition( ).r );
-		DrawFormatString( 10, 70, GetColor( 255, 255, 255 ),
-						  "PosX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->positionX );
-		DrawFormatString( 10, 90, GetColor( 255, 255, 255 ),
-						  "PosY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->positionY );
-		DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
+  
+	if (game.GetLocalPlayer().selectedUnit != nullptr) {
+		
+		if (showUnitInfo)
+		{
+			DrawBox(0, 30, 100, 150, GetColor(128, 128, 128), TRUE);
+			DrawFormatString(10, 40, GetColor(255, 255, 255),
+				game.GetLocalPlayer().selectedUnit->name.c_str());
+			DrawFormatString(10, 60, GetColor(255, 255, 255),
+				"TileQ: %d", game.GetLocalPlayer().selectedUnit->GetTilePosition().q);
+			DrawFormatString(10, 80, GetColor(255, 255, 255),
+				"TileR: %d", game.GetLocalPlayer().selectedUnit->GetTilePosition().r);
+			DrawFormatString(10, 100, GetColor(255, 255, 255),
+				"PosX: %d", (int)game.GetLocalPlayer().selectedUnit->positionX);
+			DrawFormatString(10, 120, GetColor(255, 255, 255),
+				"PosY: %d", (int)game.GetLocalPlayer().selectedUnit->positionY);
+      		DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
 						  "TargetX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetX );
 		DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
 						  "TargetY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetY );
-
+		}
+	}
+	else {
+		showUnitInfo = false;
 	}
 
 	Position world_pos = camera.convertScreenToFieldPosition( mouseX, mouseY );

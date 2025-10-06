@@ -23,7 +23,10 @@ private:
 	int mouseX = 0;
 	int mouseY = 0;
 
+
 	void Initialize( bool isHost );
+	bool showUnitInfo = false;
+
 	void ProcessInput( );
 	void Update( double deltaTime );
 	void Draw( );
