@@ -88,21 +88,31 @@ void NetworkManager::PollEvents( ) {
 	if ( !host ) return;
 
 	ENetEvent event;
-		while ( enet_host_service(host,&event,0) > 0 ) {
+		while ( enet_host_service(host,&event,10) > 0 ) {
 			switch ( event.type ) {
-			case ENET_EVENT_TYPE_CONNECT:
-				std::cout << "A new client connected!" << std::endl;
-				DrawFormatString( 10, 10, GetColor( 255, 255, 255 ),"A new client connected!");
-				break;
-			case ENET_EVENT_TYPE_RECEIVE:
-				DrawFormatString( 10, 10, GetColor( 255, 255, 255 ), "Message: %s" , ( char* )event.packet->data );
-				enet_packet_destroy( event.packet );
-				break;
+			case ENET_EVENT_TYPE_CONNECT: {
+					peer = event.peer;
+					MessageBoxA( NULL, "ê⁄ë±ÇµÇ‹ÇµÇΩ", "Connect", MB_OK );
+					break; 
+			}
+			case ENET_EVENT_TYPE_RECEIVE:{
+					std::string msg( reinterpret_cast< char* >( event.packet->data ), event.packet->dataLength );
+					DrawFormatString( 10, 10, GetColor( 255, 0, 0 ), "Message: %s", msg.c_str() );
+
+					if ( onReceiveCallback ) { 
+						onReceiveCallback( msg );
+					}
+
+					enet_packet_destroy( event.packet );
+					break;
+				}
 			case ENET_EVENT_TYPE_DISCONNECT:
-				DrawFormatString( 10, 10, GetColor( 255, 255, 255 ), "Client disconnected." );
-				std::cout << "Client disconnected." << std::endl;
-				break;
-	
+				{
+					MessageBoxA( NULL, "ê⁄ë±èIóπÇµÇ‹ÇµÇΩ", "Disconnect", MB_OK );
+					DrawFormatString( 10, 10, GetColor( 255, 255, 255 ), "Client disconnected." );
+					std::cout << "Client disconnected." << std::endl;
+					break;
+				}
 			default:
 				DrawFormatString( 10, 10, GetColor( 255, 255, 255 ), "default" );
 				break;
@@ -115,33 +125,11 @@ void NetworkManager::Send( const std::string& message ) {
 		ENetPacket* packet = enet_packet_create( message.c_str( ),
 												 message.size( ) + 1, ENET_PACKET_FLAG_RELIABLE );
 		enet_host_broadcast( host, 0, packet );
+		enet_host_flush( host );
 	} else if ( peer ) { 
 		ENetPacket* packet = enet_packet_create( message.c_str( ),
 												 message.size( ) + 1, ENET_PACKET_FLAG_RELIABLE );
 		enet_peer_send( peer, 0, packet );
+		enet_host_flush( host );
 	}
 }
-
-//void NetworkManager::Update( ) { 
-//	ENetEvent event;
-//	while ( enet_host_service(host,&event,0) > 0 ) {
-//		switch ( event.type ) {
-//		case ENET_EVENT_TYPE_CONNECT:
-//			peer = event.peer;
-//			break;
-//
-//		case ENET_EVENT_TYPE_DISCONNECT:
-//			peer = nullptr;
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
-//
-//	if ( role == NetworkRole::Host ) { 
-//	
-//	}else if ( role == NetworkRole::Client && peer ) { 
-//
-//	}
-//}

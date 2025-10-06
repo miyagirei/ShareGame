@@ -3,6 +3,7 @@
 #include "Player.h"
 #include <optional>
 #include "SceneType.h"
+#include "NetworkManager.h"
 
 struct PlayerState {
 	int stamina;
@@ -23,7 +24,10 @@ public:
 	void Draw( const Camera& camera ) const;
 	
 	void OnLeftClick( int mouseX, int mouseY, const Camera& camera );
-	void OnRightClick( int mouseX, int mouseY, const Camera& camera );
+	void OnRightClick( int mouseX, int mouseY, const Camera& camera , NetworkManager* network = nullptr );
+
+	Character* FindCharacterByName( std::string name);
+	void MoveCharacter( std::string name , int tileQ, int tileR);
 
 	Player& GetLocalPlayer( );
 	void SwitchActivePlayer( );

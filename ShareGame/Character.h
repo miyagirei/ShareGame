@@ -29,9 +29,11 @@ public:
 	Character( const std::string& name, int startQ, int startR );
 
 	void MoveToTile( const TilePosition& targetTile );
+	void MoveToTile( int targetQ , int targetR);
 	void Update( double deltaTime );
 	void Draw(const Camera& camera)const;
 	void ChangeColor( int r, int g, int b );
 	TilePosition GetTilePosition( ) const;
+	std::string GetName( )const;
 };
 

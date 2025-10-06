@@ -4,6 +4,7 @@
 #include "UIManager.h"
 #include "Camera.h"
 #include "GameManager.h"
+#include "NetworkManager.h"
 
 class GameLoopScene {
 public:
@@ -12,15 +13,17 @@ public:
 	GameManager game;
 
 private:
-	//Player* player1;
+	bool initialize = false;
 
 	Board board;
 	UIManager uiManager;
 	Camera camera;
+	NetworkManager* network;
 
 	int mouseX = 0;
 	int mouseY = 0;
 
+	void Initialize( bool isHost );
 	void ProcessInput( );
 	void Update( double deltaTime );
 	void Draw( );

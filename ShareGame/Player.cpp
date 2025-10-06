@@ -16,9 +16,9 @@ void Player::AddUnit(Character* unit) {
 }
 
 void Player::Update(double deltaTime) {
-    for (auto unit : controlledUnits) {
-        unit->Update(deltaTime);
-    }
+    //for (auto unit : controlledUnits) {
+    //    unit->Update(deltaTime);
+    //}
 }
 
 ///現在プレイヤーが所持しているユニットを表示する用
@@ -51,13 +51,20 @@ void Player::OnLeftClick(int mouseX, int mouseY, const Camera& camera , std::vec
     selectedUnit = nullptr;
 }
 
-void Player::OnRightClick(int mouseX, int mouseY, const Camera& camera) {
+bool Player::OnRightClick(int mouseX, int mouseY, const Camera& camera) {
     if (selectedUnit && CanOperableUnit()) {
         Position fieldPos = camera.convertScreenToFieldPosition(mouseX, mouseY);
-        TilePosition targetTile = ScreenToTile(fieldPos.x, fieldPos.y);
+        lastMoveTarget = ScreenToTile(fieldPos.x, fieldPos.y);
 
-        selectedUnit->MoveToTile(targetTile);
+        selectedUnit->MoveToTile( lastMoveTarget );
+        return true;
     }
+
+    return false;
+}
+
+TilePosition Player::GetLastMoveTarget( ) const { 
+    return lastMoveTarget;
 }
 
 bool Player::CanOperableUnit( ) { 
@@ -68,4 +75,8 @@ bool Player::CanOperableUnit( ) {
     }
 
     return false;
+}
+
+Character* Player::GetSelectedUnit( ) const { 
+    return selectedUnit;
 }

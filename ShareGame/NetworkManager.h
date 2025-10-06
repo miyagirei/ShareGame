@@ -1,14 +1,8 @@
 #pragma once
-//
-//#define WIN32_LEAN_AND_MEAN
-//#define _WINSOCKAPI_
 
-//#include <WinSock2.h>
-//#include <WS2tcpip.h>
-//#include <Windows.h>
-	#include <enet/enet.h>
+#include <enet/enet.h>
 
-
+#include <functional>
 #include <string>
 #include <iostream>
 
@@ -25,6 +19,7 @@ public:
 	~NetworkManager( );
 
 	NetworkRole role = NetworkRole::None;
+	std::function<void( const std::string& )> onReceiveCallback;
 
 	bool Init( );
 	void Shutdown( );
@@ -42,7 +37,5 @@ private:
 	ENetHost* host = nullptr;
 	ENetPeer* peer = nullptr;
 	bool isServer = false;
-	
-	//void Update( );
 };
 

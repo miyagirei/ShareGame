@@ -1,6 +1,7 @@
 #pragma once
 #include "UIManager.h"
 #include "NetworkManager.h"
+#include "GameLoopScene.h"
 class OnlineScene {
 public:
 	OnlineScene( );
@@ -11,6 +12,8 @@ public:
 
 private:
 	bool initialize = false;
+	bool isHost = true;
+	GameLoopScene gameLoopScene;
 
 	void Initialize( );
 };
