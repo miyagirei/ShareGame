@@ -26,13 +26,14 @@ void GameLoopScene::Initialize( bool isHost ) {
 		game.localPlayerId = 1;
 	}
 
-	//ãƒ†ã‚¹ãƒˆç”¨ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹ãŸã‚ã®ãƒœã‚¿ãƒ³//ç¾åœ¨ã¯ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®è‰²ãŒå¤‰ã‚ã‚‹
+	//ƒeƒXƒg—p‚ÌƒAƒNƒVƒ‡ƒ“‚ðŽÀs‚·‚é‚½‚ß‚Ìƒ{ƒ^ƒ“//Œ»Ý‚ÍƒLƒƒƒ‰ƒNƒ^[‚ÌF‚ª•Ï‚í‚é
 	Button actionButton = { "action" ,
 	[ & ] ( ) {
-		Character* selected = game.GetLocalPlayer( ).selectedUnit;
-		if ( selected != nullptr && game.GetLocalPlayer( ).CanOperableUnit( ) ) {
-			selected->ChangeColor( 255, 255, 0 );
-		}
+		game.GetLocalPlayer( ).money += 1;
+		//Character* selected = game.GetLocalPlayer( ).selectedUnit;
+		//if ( selected != nullptr && game.GetLocalPlayer( ).CanOperableUnit( ) ) {
+		//	selected->ChangeColor( 255, 255, 0 );
+		//}
 	},
 	[ & ] ( ) {
 		if ( !game.GetLocalPlayer( ).CanOperableUnit( ) )return false;
@@ -45,7 +46,7 @@ void GameLoopScene::Initialize( bool isHost ) {
 
 		return tile->action != TileAction::None;
 	},
-		600,200,120,40
+		500,200,120,40,AnchorType::TopLeft
 	};
 
 	Button nextTurnButton = { "NextTurn",
@@ -56,7 +57,7 @@ void GameLoopScene::Initialize( bool isHost ) {
 	[ ] ( ) {
 		return true;
 	},
-		520,300,100,40
+		520,300,100,40,AnchorType::TopLeft
 	};
 
 
@@ -74,8 +75,19 @@ void GameLoopScene::Initialize( bool isHost ) {
 
 	uiManager.AddButton( actionButton );
 	uiManager.AddButton( nextTurnButton );
-  uiManager.AddButton( unitInfoButton );
-  
+	uiManager.AddButton( unitInfoButton );
+
+	Text moneyText = { "‚¨‹à: {money}",
+	    {
+			{"money" , [ & ] ( ) { return std::to_string( (int)game.GetLocalPlayer().money ); }}
+	    },
+		[ & ] ( ) {
+			return true;
+		},
+		320,10,150,30,AnchorType::Center
+	};
+	uiManager.AddText( moneyText );
+
 	initialize = true;
 
 	if ( network ) {
