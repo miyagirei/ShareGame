@@ -7,6 +7,7 @@
 Player::Player( int id, PlayerType type ) :
 playerId(id),
 playerType(type),
+money(0),
 endTurn(false){
 
 }

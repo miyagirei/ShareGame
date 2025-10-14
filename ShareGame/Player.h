@@ -13,6 +13,7 @@ class Player {
 public :
 	int playerId;
 	PlayerType playerType;
+	double money;
 
 	std::vector<Character*> controlledUnits;
 	Character* selectedUnit = nullptr;
