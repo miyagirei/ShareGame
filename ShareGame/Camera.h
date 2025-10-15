@@ -19,7 +19,7 @@ public:
 
     Camera(int screenW, int screenH);
     Camera();
-    void Update();
+    void Update(int x , int y);
 
     void initialize();
     void setPosition(const Position& p);
@@ -39,6 +39,7 @@ private:
     Position getMovedPos(const Position& p, const Vector2& v) const;
 
     Position pos;       
+    Position lastMousePos;
     double scaleFactor; 
     int screenWidth;    
     int screenHeight;   

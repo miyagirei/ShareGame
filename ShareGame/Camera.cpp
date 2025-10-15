@@ -1,5 +1,6 @@
 #include "Dxlib.h"
 #include "Camera.h"
+#include "InputManager.h"
 
 Camera::Camera(int screenW, int screenH)
     : pos{ 0.0, 0.0 }, scaleFactor(10.0),
@@ -15,12 +16,26 @@ Camera::Camera()
     : offsetX(0.0), offsetY(0.0), zoom(1.0) {
 }
 
-void Camera::Update() {
-    int wheel = GetMouseWheelRotVol();
-    if (wheel != 0) {
-        zoom += wheel * 0.001; 
-        if (zoom < 0.1) zoom = 0.1;
-        if (zoom > 3.0) zoom = 3.0;
+void Camera::Update( int x, int y ) {
+    //int wheel = GetMouseWheelRotVol();
+    //if (wheel != 0) {
+    //    zoom += wheel * 0.001; 
+    //    if (zoom < 0.1) zoom = 0.1;
+    //    if (zoom > 3.0) zoom = 3.0;
+    //}
+
+    updateByMouseWheel( );
+
+    if ( InputManager::GetMouseDown( MOUSE_INPUT_LEFT ) ) { 
+        lastMousePos = { ( double )x,( double )y };
+    } else if ( InputManager::GetMouse( MOUSE_INPUT_LEFT ) ) { 
+        int dx = x - lastMousePos.x;
+        int dy = y - lastMousePos.y;
+
+        pos.x -= dx / scaleFactor;
+        pos.y -= dy / scaleFactor;
+
+        lastMousePos = {(double)x,( double )y};
     }
 }
 

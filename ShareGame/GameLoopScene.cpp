@@ -62,12 +62,12 @@ void GameLoopScene::Initialize( bool isHost ) {
 
 
 	Button unitInfoButton = { "UnitInfo",
-		[&]() {
+		[ & ] ( ) {
 			showUnitInfo = !showUnitInfo;
 		},
 
-		[&]() {
-			return game.GetLocalPlayer().selectedUnit != nullptr;
+		[ & ] ( ) {
+			return game.GetLocalPlayer( ).selectedUnit != nullptr;
 		},
 
 		0,0,100,30
@@ -78,9 +78,9 @@ void GameLoopScene::Initialize( bool isHost ) {
 	uiManager.AddButton( unitInfoButton );
 
 	Text moneyText = { "‚¨‹à: {money}",
-	    {
-			{"money" , [ & ] ( ) { return std::to_string( (int)game.GetLocalPlayer().money ); }}
-	    },
+		{
+			{"money" , [ & ] ( ) { return std::to_string( ( int )game.GetLocalPlayer( ).money ); }}
+		},
 		[ & ] ( ) {
 			return true;
 		},
@@ -122,24 +122,24 @@ void GameLoopScene::ProcessInput( ) {
 		const Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
 		if ( clickedTile != nullptr ) {
 			if ( network ) {
-				game.OnRightClick( mouseX, mouseY, camera , network);
-			} else { 
+				game.OnRightClick( mouseX, mouseY, camera, network );
+			} else {
 				game.OnRightClick( mouseX, mouseY, camera );
 			}
 		}
 	}
 
 	if ( InputManager::GetMouseDown( MOUSE_INPUT_LEFT ) ) {
-		uiManager.OnLeftClick( mouseX, mouseY, game.GetLocalPlayer() );
-		if (!uiManager.WasUIClicked()) {
-			game.OnLeftClick(mouseX, mouseY, camera);
+		uiManager.OnLeftClick( mouseX, mouseY, game.GetLocalPlayer( ) );
+		if ( !uiManager.WasUIClicked( ) ) {
+			game.OnLeftClick( mouseX, mouseY, camera );
 		}
 	}
 
 }
 
 void GameLoopScene::Update( double deltaTime ) {
-	camera.updateByMouseWheel( );
+	camera.Update( mouseX, mouseY );
 	game.Update( deltaTime );
 	DebugSwitchActivePlayer( );
 }
@@ -150,29 +150,27 @@ void GameLoopScene::Draw( ) {
 	game.Draw( camera );
 
 	uiManager.Draw( game.GetLocalPlayer( ), board, mouseX, mouseY );
-  
-	if (game.GetLocalPlayer().selectedUnit != nullptr) {
-		
-		if (showUnitInfo)
-		{
-			DrawBox(0, 30, 100, 150, GetColor(128, 128, 128), TRUE);
-			DrawFormatString(10, 40, GetColor(255, 255, 255),
-				game.GetLocalPlayer().selectedUnit->name.c_str());
-			DrawFormatString(10, 60, GetColor(255, 255, 255),
-				"TileQ: %d", game.GetLocalPlayer().selectedUnit->GetTilePosition().q);
-			DrawFormatString(10, 80, GetColor(255, 255, 255),
-				"TileR: %d", game.GetLocalPlayer().selectedUnit->GetTilePosition().r);
-			DrawFormatString(10, 100, GetColor(255, 255, 255),
-				"PosX: %d", (int)game.GetLocalPlayer().selectedUnit->positionX);
-			DrawFormatString(10, 120, GetColor(255, 255, 255),
-				"PosY: %d", (int)game.GetLocalPlayer().selectedUnit->positionY);
-      		DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
-						  "TargetX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetX );
-		DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
-						  "TargetY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetY );
+
+	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
+
+		if ( showUnitInfo ) {
+			DrawBox( 0, 30, 100, 150, GetColor( 128, 128, 128 ), TRUE );
+			DrawFormatString( 10, 40, GetColor( 255, 255, 255 ),
+							  game.GetLocalPlayer( ).selectedUnit->name.c_str( ) );
+			DrawFormatString( 10, 60, GetColor( 255, 255, 255 ),
+							  "TileQ: %d", game.GetLocalPlayer( ).selectedUnit->GetTilePosition( ).q );
+			DrawFormatString( 10, 80, GetColor( 255, 255, 255 ),
+							  "TileR: %d", game.GetLocalPlayer( ).selectedUnit->GetTilePosition( ).r );
+			DrawFormatString( 10, 100, GetColor( 255, 255, 255 ),
+							  "PosX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->positionX );
+			DrawFormatString( 10, 120, GetColor( 255, 255, 255 ),
+							  "PosY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->positionY );
+			DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
+							  "TargetX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetX );
+			DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
+							  "TargetY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetY );
 		}
-	}
-	else {
+	} else {
 		showUnitInfo = false;
 	}
 
