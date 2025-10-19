@@ -142,6 +142,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameLoopScene.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GeneralPurpose.h" />
     <ClInclude Include="HexagonUtility.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="NetworkManager.h" />

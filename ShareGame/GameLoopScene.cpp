@@ -119,12 +119,15 @@ void GameLoopScene::ProcessInput( ) {
 	InputManager::Update( );
 
 	if ( InputManager::GetMouse( MOUSE_INPUT_RIGHT ) ) {
-		const Tile* clickedTile = board.GetTileAt( mouseX, mouseY );
+		Position world_pos = camera.convertScreenToFieldPosition( mouseX, mouseY );
+		const Tile* clickedTile = board.GetTileAt( world_pos.x, world_pos.y );
 		if ( clickedTile != nullptr ) {
-			if ( network ) {
-				game.OnRightClick( mouseX, mouseY, camera, network );
-			} else {
-				game.OnRightClick( mouseX, mouseY, camera );
+			if ( clickedTile->GetTileType( ) == TileType::Field ) { 
+				if ( network ) {
+					game.OnRightClick( mouseX, mouseY, camera, network );
+				} else {
+					game.OnRightClick( mouseX, mouseY, camera );
+				}
 			}
 		}
 	}
@@ -201,6 +204,8 @@ void GameLoopScene::Draw( ) {
 						  "MouseTileQ: %d", targetTile.q );
 		DrawFormatString( 500, 130, GetColor( 255, 255, 255 ),
 						  "MouseTileR: %d", targetTile.r );
+		DrawFormatString( 500, 190, GetColor( 255, 255, 255 ),
+						  "TileType: %d",tile->GetTileType() );
 		//DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
 		//				  "MouseTileX: %d", ( int )tx );
 		//DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
