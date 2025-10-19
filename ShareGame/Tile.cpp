@@ -4,9 +4,10 @@
 
 double PI = 3.14159265358979323846;
 
-Tile::Tile( int q, int r, TileAction act )
+Tile::Tile( int q, int r, TileAction act, TileType type )
 	:tilePosition { q,r },
-	action( act ) {
+	action( act ) ,
+    type(type){
 	TileToScreen( q, r, x, y );
 }
 
@@ -23,8 +24,14 @@ void Tile::Draw( const Camera& camera, bool highlight ) const {
     unsigned int color = GetColor(200, 200, 200);
     DrawHexagon(sx, sy, sr, color, true);
 
+    if ( type == TileType::Field ) { 
+        DrawHexagon( sx, sy, sr, GetColor( 0, 255, 0 ), true );
+    } else { 
+        DrawHexagon( sx, sy, sr, color, true );
+    }
+
     if (action == TileAction::Heal) {
-        DrawHexagon(sx, sy, sr, GetColor(0, 255, 0), true);
+        DrawHexagon(sx, sy, sr, GetColor(255, 0, 255), true);
     }
     else if (action == TileAction::Damage) {
         DrawHexagon(sx, sy, sr, GetColor(255, 0, 0), true);
@@ -33,6 +40,7 @@ void Tile::Draw( const Camera& camera, bool highlight ) const {
     if (highlight) {
         DrawHexagon(sx, sy, sr, GetColor(255, 255, 0), false);
     }
+
 }
 
 bool Tile::IsClicked( double mouseX, double mouseY )const {
@@ -57,4 +65,8 @@ bool Tile::IsClicked( double mouseX, double mouseY )const {
     }
 
     return inside;
+}
+
+TileType Tile::GetTileType( ) const {
+    return type;
 }
