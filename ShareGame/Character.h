@@ -26,6 +26,8 @@ public:
 	int colorG = 0;
 	int colorB = 255;
 
+	int image = -1;
+
 	Character( const std::string& name, int startQ, int startR );
 
 	void MoveToTile( const TilePosition& targetTile );

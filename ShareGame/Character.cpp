@@ -12,6 +12,7 @@ Character::Character(const std::string& name, int startQ, int startR)
     TileToScreen( tilePosition.q, tilePosition.r, positionX, positionY );
     targetX = positionX;
     targetY = positionY;
+    image = LoadGraph( "image/pictgram_normal.png" );
 }
 
 void Character::MoveToTile(const TilePosition& targetTile) {
@@ -51,7 +52,8 @@ void Character::Draw(const Camera& camera) const {
     int sy = camera.convertFieldPositionToScreenY(Position{ positionX, positionY });
     int sr = camera.convertSizeToScreenSize(20);
 
-    DrawCircle(sx, sy, sr, GetColor(colorR, colorG, colorB), TRUE);
+    DrawExtendGraph( sx - sr / 2, sy - sr / 2, sx + sr / 2, sy + sr / 2, image, TRUE );
+    //DrawCircle(sx, sy, sr, GetColor(colorR, colorG, colorB), TRUE);
 }
 
 void Character::ChangeColor(int r, int g, int b) {
