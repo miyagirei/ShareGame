@@ -104,14 +104,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\DxLib_VC;C:\Users\vantan\source\repos\ShareGame\third_party\enet\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\DxLib_VC;C:\ShareGame\third_party\enet\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\DxLib_VC;C:\Users\vantan\source\repos\ShareGame\third_party\enet\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\DxLib_VC;C:\ShareGame\third_party\enet\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ws2_32.lib;winmm.lib;enet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
