@@ -34,7 +34,7 @@ public:
     bool isFullOutOfScreen(const Position& p, double radius) const;
 
     void updateByMouseWheel(); 
-
+    double GetZoom( ) const;
 private:
     Position getMovedPos(const Position& p, const Vector2& v) const;
 

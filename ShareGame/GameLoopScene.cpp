@@ -156,6 +156,7 @@ void GameLoopScene::Draw( ) {
 
 	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
 
+		//game.GetLocalPlayer( ).selectedUnit->DrawMaskDebug( camera );//
 		if ( showUnitInfo ) {
 			DrawBox( 0, 30, 100, 150, GetColor( 128, 128, 128 ), TRUE );
 			DrawFormatString( 10, 40, GetColor( 255, 255, 255 ),
@@ -172,6 +173,7 @@ void GameLoopScene::Draw( ) {
 							  "TargetX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetX );
 			DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
 							  "TargetY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetY );
+
 		}
 	} else {
 		showUnitInfo = false;

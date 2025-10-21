@@ -110,3 +110,7 @@ void Camera::updateByMouseWheel() {
         if (scaleFactor > 50.0) scaleFactor = 50.0;
     }
 }
+
+double Camera::GetZoom( ) const { 
+    return scaleFactor;
+}

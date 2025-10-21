@@ -2,6 +2,7 @@
 #include <string>
 #include "TileUtility.h"
 #include "Camera.h"
+#include <vector>
 
 enum class CharacterState {
 	Idle,
@@ -27,6 +28,7 @@ public:
 	int colorB = 255;
 
 	int image = -1;
+	std::vector < std::vector<bool> >mask;
 
 	Character( const std::string& name, int startQ, int startR );
 
@@ -37,5 +39,10 @@ public:
 	void ChangeColor( int r, int g, int b );
 	TilePosition GetTilePosition( ) const;
 	std::string GetName( )const;
+	bool IsClick( int mouseX, int mouseY, const Camera& camera );
+
+	void DrawMaskDebug( const Camera& camera ) const;
+private:
+	void CreateMaskFromImage( const char* filename );
 };
 
