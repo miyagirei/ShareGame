@@ -1,12 +1,13 @@
 #include "SceneManager.h"
 #include "Dxlib.h"
 #include "DebugUI.h"
+#include "TitleToMainGame.h"
 void SceneManager::Update( ) {
 
 }
 
 SceneManager::SceneManager( ) {
-    scene = SceneType::map3;
+    scene = SceneType::Title;
 }
 
 bool SceneManager::isClicked( ) {
@@ -49,7 +50,12 @@ void SceneManager::SceneChange( ) {
 
     ClearDrawScreen( );
     DebugUI debug;
+
     switch ( scene ) {
+    case SceneType::Title:
+        titleScene.Run(scene);
+        break;
+
     case SceneType::map1:
         testScene.Run( );
         break;

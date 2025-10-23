@@ -4,9 +4,11 @@
 #include "GameLoopScene.h"
 #include "SceneType.h"
 #include "OnlineScene.h"
+#include "TitleToMainGame.h"
 class SceneManager {
 public:
 	SceneType scene;
+	TitleScene titleScene;
 	void Update( );
 
 	SceneManager( );

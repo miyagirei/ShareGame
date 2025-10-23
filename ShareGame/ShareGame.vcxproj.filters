@@ -17,6 +17,7 @@
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="OnlineScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="TitleToMainGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="OnlineScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="GeneralPurpose.h" />
+    <ClInclude Include="TitleToMainGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShareGame.rc" />
