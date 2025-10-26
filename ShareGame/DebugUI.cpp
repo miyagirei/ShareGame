@@ -1,9 +1,6 @@
 #include "DebugUI.h"
 #include "DxLib.h"
-#include "MapCreate.h"
 #include "SceneType.h"
-
-extern MapCreate map;
 
 const int GRID_SIZE = 10;
 
@@ -40,7 +37,7 @@ void DebugUI::UpdateInput() {
 	prevMouse = mouseInput;
 }
 
-void DebugUI::SummonDebug() {
+void DebugUI::SummonDebug( SceneType& scene ) {
 	if (IsDebugKeyPressed()) {
 		UpdateInput();
 
@@ -70,11 +67,11 @@ void DebugUI::SummonDebug() {
 		DrawBox(nextScenex1, nextSceney1, nextScenex2, nextSceney2, GetColor(192, 192, 192), TRUE);
 		DrawTriangle(193, 55, 178, 42, 178, 68, GetColor(0, 0, 0), TRUE);
 
-		SceneTranceButton();
+		SceneTranceButton(scene);
 	}
 }
 
-void DebugUI::SceneTranceButton() {
+void DebugUI::SceneTranceButton( SceneType& scene ) {
 
 	int prevScenex1 = 5, prevScenex2 = 25, prevSceney1 = 40, prevSceney2 = 70;
 	DrawBox(prevScenex1, prevSceney1, prevScenex2, prevSceney2, GetColor(192, 192, 192), TRUE);
@@ -91,15 +88,19 @@ void DebugUI::SceneTranceButton() {
 	if (clickedThisFrame) {
 		if (mx >= prevScenex1 && mx <= prevScenex2 &&
 			my >= prevSceney1 && my <= prevSceney2) {
-			if (map.GetScene() == SceneType::map1) map.SetScene( SceneType::map3);
-			else map.SetScene(static_cast<SceneType>(static_cast<int>(map.GetScene()) - 1));
+			//if ( map.GetScene() == SceneType::map1) map.SetScene( SceneType::map3);
+			if ( scene == SceneType::map1)scene = SceneType::onlineScene;
+			//else map.SetScene(static_cast<SceneType>(static_cast<int>(map.GetScene()) - 1));
+			else scene = (static_cast<SceneType>(static_cast<int>(scene) - 1));
 			DrawString(250, 50, "Prevボタン押下", GetColor(255, 0, 0));
 		}
 
 		if (mx >= nextScenex1 && mx <= nextScenex2 &&
 			my >= nextSceney1 && my <= nextSceney2) {
-			if (map.GetScene() == SceneType::map3) map.SetScene( SceneType::map1);
-			else map.SetScene( static_cast< SceneType >( static_cast< int >( map.GetScene( ) ) + 1 ) );
+			//if (map.GetScene() == SceneType::map3) map.SetScene( SceneType::map1);
+			if (scene == SceneType::onlineScene ) scene = SceneType::map1;
+			//else map.SetScene( static_cast< SceneType >( static_cast< int >( map.GetScene( ) ) + 1 ) );
+			else scene = ( static_cast< SceneType >( static_cast< int >( scene ) + 1 ) );
 			DrawString(250, 70, "Nextボタン押下", GetColor(0, 255, 0));
 		}
 	}
