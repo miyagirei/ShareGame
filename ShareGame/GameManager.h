@@ -20,6 +20,7 @@ public:
 	std::optional<SceneType> GetRequestedScene( ) const;
 
 	void AddPlayer( Player* player, Character* unit = nullptr );
+	void AddUnit( Character* unit ,Player* player = nullptr );
 	void Update( double deltaTime );
 	void Draw( const Camera& camera ) const;
 	

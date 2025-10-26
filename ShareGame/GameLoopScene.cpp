@@ -13,11 +13,13 @@ GameLoopScene::GameLoopScene( NetworkManager* net )
 void GameLoopScene::Initialize( bool isHost ) {
 	Character* unit1 = new Character( "Unit1", 0, 0 );
 	Character* unit2 = new Character( "Unit2", 2, 1 );
+	Character* unit3 = new Character( "Unit3", 4, 4 );
 
 	Player* player1 = new Player( 0, PlayerType::Human );
 	Player* player2 = new Player( 1, PlayerType::Human );
 
 	game.AddPlayer( player1, unit1 );
+	game.AddUnit( unit3, player1 );
 	game.AddPlayer( player2, unit2 );
 
 	if ( isHost ) {

@@ -49,13 +49,25 @@ void Character::Update( double deltaTime ) {
 	}
 }
 
-void Character::Draw( const Camera& camera ) const {
+void Character::Draw( const Camera& camera, const std::vector<Character*>& allCharacters ) const {
 	int sx = camera.convertFieldPositionToScreenX( Position { positionX, positionY } );
 	int sy = camera.convertFieldPositionToScreenY( Position { positionX, positionY } );
 	int sr = camera.convertSizeToScreenSize( CHARACTER_SIZE );
 
+	std::vector<const Character*> sameTileCharacters = GetSameTileCharacters( allCharacters );
+	int index = GetIndexInSameTile( sameTileCharacters );
+
+	if ( sameTileCharacters.size( ) >= 3 ) { 
+		double angle = PI * 2 / sameTileCharacters.size( ) * index - ( PI / 2 );
+		double radius = camera.convertSizeToScreenSize( 15 );
+		sx += ( int )( cos( angle ) * radius );
+		sy += ( int )( sin( angle ) * radius );
+	} else { 
+		int offset = camera.convertSizeToScreenSize( 15 );
+		sx += ( index - ( sameTileCharacters.size( ) - 1 ) / 2.0 ) * offset;
+	}
+
 	DrawExtendGraph( sx - sr / 2, sy - sr / 2, sx + sr / 2, sy + sr / 2, image, TRUE );
-	//DrawCircle(sx, sy, sr, GetColor(colorR, colorG, colorB), TRUE);
 }
 
 void Character::ChangeColor( int r, int g, int b ) {
@@ -94,12 +106,25 @@ void Character::CreateMaskFromImage( const char* filename ) {
 	DeleteSoftImage( softImage );
 }
 
-bool Character::IsClick( int mouseX, int mouseY, const Camera& camera ) {
+bool Character::IsClick( int mouseX, int mouseY, const Camera& camera, const std::vector<Character*>& allCharacters ) {
 	if ( mask.empty( ) ) return false;
 
 	int sx = camera.convertFieldPositionToScreenX( Position { positionX, positionY } );
 	int sy = camera.convertFieldPositionToScreenY( Position { positionX, positionY } );
 	int sr = camera.convertSizeToScreenSize( CHARACTER_SIZE );
+
+	std::vector<const Character*> sameTileCharacters = GetSameTileCharacters( allCharacters );
+	int index = GetIndexInSameTile( sameTileCharacters );
+
+	if ( sameTileCharacters.size( ) >= 3 ) {
+		double angle = PI * 2 / sameTileCharacters.size( ) * index - ( PI / 2 );
+		double radius = camera.convertSizeToScreenSize( 15 );
+		sx += ( int )( cos( angle ) * radius );
+		sy += ( int )( sin( angle ) * radius );
+	} else {
+		int offset = camera.convertSizeToScreenSize( 15 );
+		sx += ( index - ( sameTileCharacters.size( ) - 1 ) / 2.0 ) * offset;
+	}
 
 	int w, h;
 	GetGraphSize( image, &w, &h );
@@ -107,11 +132,11 @@ bool Character::IsClick( int mouseX, int mouseY, const Camera& camera ) {
 	int drawW = sr;
 	int drawH = sr;
 
-	float startX = sx - drawW / 2.0f;
-	float startY = sy - drawH / 2.0f;
+	double startX = sx - drawW / 2.0;
+	double startY = sy - drawH / 2.0;
 
-	float relX = ( mouseX - startX ) / drawW * w;
-	float relY = ( mouseY - startY ) / drawH * h;
+	double relX = ( mouseX - startX ) / drawW * w;
+	double relY = ( mouseY - startY ) / drawH * h;
 
 	int ix = static_cast< int >( relX );
 	int iy = static_cast< int >( relY );
@@ -120,12 +145,25 @@ bool Character::IsClick( int mouseX, int mouseY, const Camera& camera ) {
 	return mask[ iy ][ ix ];
 }
 
-void Character::DrawMaskDebug( const Camera& camera ) const {
+void Character::DrawMaskDebug( const Camera& camera, const std::vector<Character*>& allCharacters ) const {
 	if ( mask.empty( ) ) return;
 
 	int sx = camera.convertFieldPositionToScreenX( Position { positionX, positionY } );
 	int sy = camera.convertFieldPositionToScreenY( Position { positionX, positionY } );
 	int sr = camera.convertSizeToScreenSize( CHARACTER_SIZE );
+
+	std::vector<const Character*> sameTileCharacters = GetSameTileCharacters( allCharacters );
+	int index = GetIndexInSameTile( sameTileCharacters );
+
+	if ( sameTileCharacters.size( ) >= 3 ) {
+		double angle = PI * 2 / sameTileCharacters.size( ) * index - ( PI / 2 );
+		double radius = camera.convertSizeToScreenSize( 15 );
+		sx += ( int )( cos( angle ) * radius );
+		sy += ( int )( sin( angle ) * radius );
+	} else {
+		int offset = camera.convertSizeToScreenSize( 15 );
+		sx += ( index - ( sameTileCharacters.size( ) - 1 ) / 2.0 ) * offset;
+	}
 
 	int w, h;
 	GetGraphSize( image, &w, &h );
@@ -146,4 +184,24 @@ void Character::DrawMaskDebug( const Camera& camera ) const {
 			DrawPixel( px, py, GetColor( 255, 0, 0 ) );
 		}
 	}
+}
+
+std::vector<const Character*> Character::GetSameTileCharacters( const std::vector<Character*>& allCharacters ) const {
+	std::vector<const Character*> result;
+	for ( auto* ch : allCharacters ) {
+		if ( ( int )ch->positionX == ( int )positionX && ( int )ch->positionY == ( int )positionY ) {
+			result.push_back( ch );
+		}
+	}
+	return result;
+}
+
+int Character::GetIndexInSameTile( const std::vector<const Character*>& sameTileCharacters ) const {
+	for ( int i = 0; i < sameTileCharacters.size( ); i++ ) {
+		if ( sameTileCharacters[ i ] == this ) {
+			return i;
+		}
+	}
+
+	return -1;
 }

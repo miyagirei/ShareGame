@@ -9,6 +9,14 @@ void GameManager::AddPlayer( Player* player, Character* unit) {
 	}
 }
 
+void GameManager::AddUnit( Character* unit, Player* player ) { 
+	allUnits.push_back( unit );
+
+	if ( player != nullptr ) { 
+		player->controlledUnits.push_back( unit );
+	}
+}
+
 void GameManager::Update( double deltaTime ) { 
 	bool allPlayerEndTurn = true;
 	
@@ -36,7 +44,7 @@ void GameManager::Update( double deltaTime ) {
 
 void GameManager::Draw( const Camera& camera ) const { 
 	for ( auto unit : allUnits ) { 
-		unit->Draw( camera );
+		unit->Draw( camera, allUnits);
 	}
 }
 
