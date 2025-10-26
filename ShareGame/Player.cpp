@@ -27,7 +27,7 @@ void Player::Update(double deltaTime) {
 ///GameLoopScene->–¢Žg—p
 void Player::Draw(const Camera& camera) const {
     for (auto unit : controlledUnits) {
-        unit->Draw(camera);
+        unit->Draw(camera , controlledUnits);
     }
 }
 
@@ -37,14 +37,7 @@ void Player::OnLeftClick(int mouseX, int mouseY, const Camera& camera , std::vec
     TilePosition clickedTile = ScreenToTile(fieldPos.x, fieldPos.y);
 
     for (auto unit : units) {
-        double unitX = 0.0;
-        double unitY = 0.0;
-        TileToScreen(unit->tilePosition.q, unit->tilePosition.r, unitX, unitY);
-
-        double dx = fieldPos.x - unitX;
-        double dy = fieldPos.y - unitY;
-
-        if (std::sqrt(dx * dx + dy * dy) < 20.0) {
+        if ( unit->IsClick( mouseX, mouseY, camera,units ) ) { 
             selectedUnit = unit;
             return;
         }

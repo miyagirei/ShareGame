@@ -13,11 +13,13 @@ GameLoopScene::GameLoopScene( NetworkManager* net )
 void GameLoopScene::Initialize( bool isHost ) {
 	Character* unit1 = new Character( "Unit1", 0, 0 );
 	Character* unit2 = new Character( "Unit2", 2, 1 );
+	Character* unit3 = new Character( "Unit3", 4, 4 );
 
 	Player* player1 = new Player( 0, PlayerType::Human );
 	Player* player2 = new Player( 1, PlayerType::Human );
 
 	game.AddPlayer( player1, unit1 );
+	game.AddUnit( unit3, player1 );
 	game.AddPlayer( player2, unit2 );
 
 	if ( isHost ) {
@@ -156,6 +158,7 @@ void GameLoopScene::Draw( ) {
 
 	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
 
+		//game.GetLocalPlayer( ).selectedUnit->DrawMaskDebug( camera );//
 		if ( showUnitInfo ) {
 			DrawBox( 0, 30, 100, 150, GetColor( 128, 128, 128 ), TRUE );
 			DrawFormatString( 10, 40, GetColor( 255, 255, 255 ),
@@ -172,6 +175,7 @@ void GameLoopScene::Draw( ) {
 							  "TargetX: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetX );
 			DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),
 							  "TargetY: %d", ( int )game.GetLocalPlayer( ).selectedUnit->targetY );
+
 		}
 	} else {
 		showUnitInfo = false;
