@@ -10,6 +10,9 @@ public:
 	NetworkManager network;
 	UIManager uiManager;
 
+	void SetHost(bool host) { isHost = host; }
+	bool IsHost() const { return isHost; }
+
 private:
 	bool initialize = false;
 	bool isHost = true;

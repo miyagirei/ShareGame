@@ -74,6 +74,9 @@ void SceneManager::SceneChange( ) {
     case SceneType::onlineScene:
         onlineScene.Run( );
         break;
+    case SceneType::menu:
+        titleScene.SelectButton(scene);
+        break;
     }
     debug.SummonDebug(scene );
 

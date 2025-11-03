@@ -16,6 +16,7 @@ public:
 	void SetScene( SceneType newScene );
 	SceneType GetScene( ) const;
 	void TransScene( SceneType next );
+	OnlineScene& GetOnlineScene() { return onlineScene; }
 
 private:
 	CharacterTestScene testScene;

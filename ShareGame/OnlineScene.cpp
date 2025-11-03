@@ -3,6 +3,8 @@
 #include <thread>
 #include <chrono>
 
+OnlineScene onlineScene;
+
 OnlineScene::OnlineScene( ) :
 gameLoopScene(&network){ 
 
@@ -12,6 +14,8 @@ void OnlineScene::Run( double deltaTime ) {
 	if ( !initialize ) { 
 		Initialize( );
 	}
+
+	DrawString(10, 10, isHost ? "MODE:HOST" : "MODE:CLIENT", GetColor(255, 255, 0));
 
 	network.PollEvents( );
 	gameLoopScene.Run( 1.0 / 60.0,isHost );
@@ -25,12 +29,9 @@ void OnlineScene::Run( double deltaTime ) {
 }
 
 void OnlineScene::Initialize( ) { 
-	int res = MessageBoxA( NULL, "サーバーで起動？", "起動選択", MB_YESNO );
-	if ( res == IDYES ) {
-		isHost = true;
+	if ( isHost ) {
 		network.Host( 1234 );
 	} else {
-		isHost = false;
 		network.Connect( "localhost", 1234 );
 	}
 	initialize = true;
