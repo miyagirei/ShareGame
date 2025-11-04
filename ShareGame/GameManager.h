@@ -4,6 +4,7 @@
 #include <optional>
 #include "SceneType.h"
 #include "NetworkManager.h"
+#include "Board.h"
 
 struct PlayerState {
 	int stamina;
@@ -12,8 +13,12 @@ struct PlayerState {
 
 class GameManager {
 public:
+	GameManager( int width, int height );
+
 	std::vector<Player*> players;
 	std::vector<Character*> allUnits;
+	Board board;
+	const Tile* selectedTile = nullptr;
 	int localPlayerId = 0;
 	int currentTurn = 1;
 	int maxTurn = 3;
@@ -32,6 +37,8 @@ public:
 
 	Player& GetLocalPlayer( );
 	void SwitchActivePlayer( );
+public:
+	const Tile* GetSelectedTile( ) const { return selectedTile; }
 private:
 	std::optional<SceneType> requestedScene;
 };
