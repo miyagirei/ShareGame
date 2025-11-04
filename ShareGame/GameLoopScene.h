@@ -15,7 +15,6 @@ public:
 private:
 	bool initialize = false;
 
-	Board board;
 	UIManager uiManager;
 	Camera camera;
 	NetworkManager* network;

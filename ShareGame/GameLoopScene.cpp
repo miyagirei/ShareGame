@@ -6,7 +6,7 @@
 
 
 GameLoopScene::GameLoopScene( NetworkManager* net )
-	:board( 10, 10 ), camera( 0, 0 ), network( net ) {
+	:game( 10, 10 ), camera( 0, 0 ), network( net ) {
 }
 
 
@@ -28,7 +28,7 @@ void GameLoopScene::Initialize( bool isHost ) {
 		game.localPlayerId = 1;
 	}
 
-	//テスト用のアクションを実行するためのボタン//現在はキャラクターの色が変わる
+	//ボタンの設定
 	Button actionButton = { "action" ,
 	[ & ] ( ) {
 		game.GetLocalPlayer( ).money += 1;
@@ -43,7 +43,7 @@ void GameLoopScene::Initialize( bool isHost ) {
 		Character* selected = game.GetLocalPlayer( ).selectedUnit;
 		if ( !selected ) return false;
 
-		const Tile* tile = board.GetTileAt( selected->positionX, selected->positionY );
+		const Tile* tile = game.board.GetTileAt( selected->positionX, selected->positionY );
 		if ( !tile ) return false;
 
 		return tile->action != TileAction::None;
@@ -79,6 +79,7 @@ void GameLoopScene::Initialize( bool isHost ) {
 	uiManager.AddButton( nextTurnButton );
 	uiManager.AddButton( unitInfoButton );
 
+	//テキストの設定
 	Text moneyText = { "お金: {money}",
 		{
 			{"money" , [ & ] ( ) { return std::to_string( ( int )game.GetLocalPlayer( ).money ); }}
@@ -88,7 +89,23 @@ void GameLoopScene::Initialize( bool isHost ) {
 		},
 		320,10,150,30,AnchorType::Center
 	};
+	Text tileInfoText = { "タイル情報: {tileQ},{tileR}",
+	{
+		{"tileQ" , [ & ] ( ) { return std::to_string( game.GetSelectedTile( )->tilePosition.q ); }},
+		{"tileR" , [ & ] ( ) { return std::to_string( game.GetSelectedTile( )->tilePosition.r ); }}
+	},
+	[ & ] ( ) {
+		return true;
+	},
+	550,400,150,30,AnchorType::Center,"Tile"
+	};
 	uiManager.AddText( moneyText );
+	uiManager.AddText( tileInfoText );
+	
+	//グループの設定
+	uiManager.SetGroupVisibleCondition( "Tile", [ this ] ( ) {
+		return game.GetSelectedTile( ) != nullptr;
+	} );
 
 	initialize = true;
 
@@ -119,12 +136,13 @@ void GameLoopScene::Run( double deltaTime, bool isHost ) {
 
 void GameLoopScene::ProcessInput( ) {
 	InputManager::Update( );
+	uiManager.Update( );
 
 	if ( InputManager::GetMouse( MOUSE_INPUT_RIGHT ) ) {
 		Position world_pos = camera.convertScreenToFieldPosition( mouseX, mouseY );
-		const Tile* clickedTile = board.GetTileAt( world_pos.x, world_pos.y );
+		const Tile* clickedTile = game.board.GetTileAt( world_pos.x, world_pos.y );
 		if ( clickedTile != nullptr ) {
-			if ( clickedTile->GetTileType( ) == TileType::Field ) { 
+			if ( clickedTile->GetTileType( ) == TileType::Field ) {
 				if ( network ) {
 					game.OnRightClick( mouseX, mouseY, camera, network );
 				} else {
@@ -150,11 +168,9 @@ void GameLoopScene::Update( double deltaTime ) {
 }
 
 void GameLoopScene::Draw( ) {
-
-	board.Draw( camera );
 	game.Draw( camera );
 
-	uiManager.Draw( game.GetLocalPlayer( ), board, mouseX, mouseY );
+	uiManager.Draw( game.GetLocalPlayer( ), game.board, mouseX, mouseY );
 
 	if ( game.GetLocalPlayer( ).selectedUnit != nullptr ) {
 
@@ -198,18 +214,14 @@ void GameLoopScene::Draw( ) {
 	DrawFormatString( 500, 170, GetColor( 255, 255, 255 ),
 					  "TurnNum: %d", game.currentTurn );
 
-	const Tile* tile = board.GetTileAt( world_pos.x, world_pos.y );
+	const Tile* tile = game.GetSelectedTile( );
 	if ( tile != nullptr ) {
-		TilePosition targetTile = ScreenToTile( world_pos.x, world_pos.y );
-		double tx, ty;
-		TileToScreen( targetTile.q, targetTile.r, tx, ty );
-
 		DrawFormatString( 500, 110, GetColor( 255, 255, 255 ),
-						  "MouseTileQ: %d", targetTile.q );
+						  "MouseTileQ: %d", tile->tilePosition.q );
 		DrawFormatString( 500, 130, GetColor( 255, 255, 255 ),
-						  "MouseTileR: %d", targetTile.r );
+						  "MouseTileR: %d", tile->tilePosition.r );
 		DrawFormatString( 500, 190, GetColor( 255, 255, 255 ),
-						  "TileType: %d",tile->GetTileType() );
+						  "TileType: %d", tile->GetTileType( ) );
 		//DrawFormatString( 10, 110, GetColor( 255, 255, 255 ),
 		//				  "MouseTileX: %d", ( int )tx );
 		//DrawFormatString( 10, 130, GetColor( 255, 255, 255 ),

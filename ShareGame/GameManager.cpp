@@ -1,5 +1,9 @@
 #include "GameManager.h"
 
+GameManager::GameManager( int width, int height ) :board(width, height){ 
+
+}
+
 void GameManager::AddPlayer( Player* player, Character* unit) {
 	players.push_back( player );
 	
@@ -43,6 +47,7 @@ void GameManager::Update( double deltaTime ) {
 }
 
 void GameManager::Draw( const Camera& camera ) const { 
+	board.Draw( camera );
 	for ( auto unit : allUnits ) { 
 		unit->Draw( camera, allUnits);
 	}
@@ -50,6 +55,14 @@ void GameManager::Draw( const Camera& camera ) const {
 
 void GameManager::OnLeftClick( int mouseX, int mouseY, const Camera& camera ) { 
 	players[ localPlayerId ]->OnLeftClick( mouseX, mouseY, camera , allUnits);
+	Position world_pos = camera.convertScreenToFieldPosition( mouseX, mouseY );
+	const Tile* tile = board.GetTileAt( world_pos.x, world_pos.y );
+
+	if ( tile ) { 
+		selectedTile = tile;
+	} else { 
+		selectedTile = nullptr;
+	}
 }
 
 void GameManager::OnRightClick( int mouseX, int mouseY, const Camera& camera, NetworkManager* network ) {
