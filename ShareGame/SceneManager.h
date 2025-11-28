@@ -4,7 +4,7 @@
 #include "GameLoopScene.h"
 #include "SceneType.h"
 #include "OnlineScene.h"
-#include "TitleToMainGame.h"
+#include "TitleScene.h"
 class SceneManager {
 public:
 	SceneType scene;

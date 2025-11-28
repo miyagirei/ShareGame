@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "Dxlib.h"
 #include "DebugUI.h"
-#include "TitleToMainGame.h"
+#include "TitleScene.h"
 void SceneManager::Update( ) {
 
 }
@@ -73,9 +73,6 @@ void SceneManager::SceneChange( ) {
 
     case SceneType::onlineScene:
         onlineScene.Run( );
-        break;
-    case SceneType::menu:
-        titleScene.SelectButton(scene);
         break;
     }
     debug.SummonDebug(scene );

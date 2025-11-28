@@ -2,6 +2,11 @@
 #include "DxLib.h"
 #include "SceneType.h"
 
+enum class TitleState {
+	Title,
+	Menu
+};
+
 class TitleScene {
 public:
 	void Run(SceneType& currentScene);
@@ -9,4 +14,5 @@ public:
 private:
 	void UpdateInput();
 	bool clickedThisFrame;
+	TitleState state = TitleState::Title;
 };

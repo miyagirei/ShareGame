@@ -1,6 +1,6 @@
 #include "OnlineScene.h"
 #include "Dxlib.h"
-#include "TitleToMainGame.h"
+#include "TitleScene.h"
 #include "SceneType.h"
 #include "SceneManager.h"
 
@@ -18,11 +18,18 @@ void TitleScene::UpdateInput() {
 }
 
 void TitleScene::Run(SceneType& currentScene) {
-	DrawString(280, 150, "ShareGame", GetColor(255, 255, 255));
-    DrawString(260, 250, "Click to Start", GetColor(255, 255, 255));
+    switch (state) {
+    case TitleState::Title:
+        DrawString(280, 150, "ShareGame", GetColor(255, 255, 255));
+        DrawString(260, 250, "Click to Start", GetColor(255, 255, 255));
 
-    if ((GetMouseInput() & MOUSE_INPUT_LEFT)) {
-        currentScene = SceneType::menu;
+        if ((GetMouseInput() & MOUSE_INPUT_LEFT)) {
+            state = TitleState::Menu;
+        }
+        break;
+    case TitleState::Menu:
+        SelectButton(currentScene);
+        break;
     }
 }
 
