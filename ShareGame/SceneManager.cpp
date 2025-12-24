@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "Dxlib.h"
 #include "DebugUI.h"
-#include "TitleToMainGame.h"
+#include "TitleScene.h"
 void SceneManager::Update( ) {
 
 }
